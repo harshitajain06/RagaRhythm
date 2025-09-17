@@ -8,25 +8,27 @@ import {
   StyleSheet,
   ActivityIndicator,
   ScrollView,
+  Linking,
 } from "react-native";
 import { OpenAI } from "openai";
+import { db, auth } from "../../config/firebase"; // adjust path to your firebase.js
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
-// ⚠️ Put your key here (for testing only, better to keep in .env or app.json in production)
 const openai = new OpenAI({
-  apiKey: "",
-  dangerouslyAllowBrowser: true, // required for RN/Expo
+  apiKey: "", // ⚠️ put in env for production
+  dangerouslyAllowBrowser: true,
 });
 
 export default function SuggestionScreen() {
   const [userInput, setUserInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [suggestions, setSuggestions] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
 
   const analyzeMoodAndSuggestSongs = async () => {
     if (!userInput.trim()) return;
 
     setLoading(true);
-    setSuggestions("");
+    setSuggestions([]);
 
     try {
       const completion = await openai.chat.completions.create({
@@ -35,7 +37,7 @@ export default function SuggestionScreen() {
           {
             role: "system",
             content:
-              "You are a music recommender. Based on the user's feelings, suggest 5 songs that match their mood. Provide results in bullet points.",
+              "You are a music recommender. Based on the user's feelings, suggest 5 songs that match their mood. Return only song title and artist in bullet points.",
           },
           { role: "user", content: userInput },
         ],
@@ -44,13 +46,41 @@ export default function SuggestionScreen() {
       const result =
         completion.choices[0]?.message?.content ||
         "Sorry, I couldn’t generate suggestions.";
-      setSuggestions(result);
+
+      // Convert GPT output into an array of song strings
+      const songList = result
+        .split("\n")
+        .map((line) => line.replace(/^[-•\d.]+\s*/, "").trim()) // remove bullets/numbers
+        .filter((line) => line.length > 0);
+
+      setSuggestions(songList);
     } catch (error) {
       console.error("Error fetching suggestions:", error);
-      setSuggestions("Something went wrong. Try again later.");
+      setSuggestions(["Something went wrong. Try again later."]);
     } finally {
       setLoading(false);
     }
+  };
+
+  const openSong = async (song) => {
+    const query = encodeURIComponent(song + " song");
+    const url = `https://www.youtube.com/results?search_query=${query}`;
+
+    // Save clicked song to Firestore
+    try {
+      if (auth.currentUser) {
+        await addDoc(collection(db, "clickedSongs"), {
+          uid: auth.currentUser.uid,
+          song,
+          url,
+          createdAt: serverTimestamp(),
+        });
+      }
+    } catch (err) {
+      console.error("Error saving clicked song:", err);
+    }
+
+    Linking.openURL(url);
   };
 
   return (
@@ -76,7 +106,11 @@ export default function SuggestionScreen() {
       {loading && <ActivityIndicator size="large" color="#007BFF" />}
 
       <ScrollView style={styles.resultBox}>
-        <Text style={styles.resultText}>{suggestions}</Text>
+        {suggestions.map((song, index) => (
+          <TouchableOpacity key={index} onPress={() => openSong(song)}>
+            <Text style={styles.linkText}>🎵 {song}</Text>
+          </TouchableOpacity>
+        ))}
       </ScrollView>
     </View>
   );
@@ -122,9 +156,10 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
   },
-  resultText: {
+  linkText: {
     fontSize: 16,
-    color: "#ddd",
-    lineHeight: 22,
+    color: "#4da6ff",
+    marginBottom: 10,
+    textDecorationLine: "underline",
   },
 });
