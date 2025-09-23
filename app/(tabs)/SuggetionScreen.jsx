@@ -1,36 +1,67 @@
 // SuggestionScreen.js
-import React, { useState } from "react";
+import { addDoc, collection, doc, getDoc, serverTimestamp } from "firebase/firestore";
+import { OpenAI } from "openai";
+import React, { useEffect, useState } from "react";
 import {
-  View,
+  ActivityIndicator,
+  Linking,
+  ScrollView,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
-  ActivityIndicator,
-  ScrollView,
-  Linking,
+  View,
 } from "react-native";
-import { OpenAI } from "openai";
-import { db, auth } from "../../config/firebase"; // adjust path to your firebase.js
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { auth, db } from "../../config/firebase"; // adjust path to your firebase.js
 
-const openai = new OpenAI({
-  apiKey: "", // ⚠️ put in env for production
-  dangerouslyAllowBrowser: true,
-});
+// Function to get API key from Firebase
+const getApiKeyFromFirebase = async () => {
+  try {
+    const apiKeyDoc = await getDoc(doc(db, "configSaketh", "openai"));
+    if (apiKeyDoc.exists()) {
+      return apiKeyDoc.data().apiKey;
+    } else {
+      console.error("API key not found in Firebase");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching API key from Firebase:", error);
+    return null;
+  }
+};
 
 export default function SuggestionScreen() {
   const [userInput, setUserInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
+  const [apiKey, setApiKey] = useState(null);
+
+  // Load API key from Firebase on component mount
+  useEffect(() => {
+    const loadApiKey = async () => {
+      const key = await getApiKeyFromFirebase();
+      setApiKey(key);
+    };
+    loadApiKey();
+  }, []);
 
   const analyzeMoodAndSuggestSongs = async () => {
     if (!userInput.trim()) return;
+
+    if (!apiKey) {
+      setSuggestions(["API key not available. Please check Firebase configuration."]);
+      return;
+    }
 
     setLoading(true);
     setSuggestions([]);
 
     try {
+      const openai = new OpenAI({
+        apiKey: apiKey,
+        dangerouslyAllowBrowser: true,
+      });
+
       const completion = await openai.chat.completions.create({
         model: "gpt-4o-mini",
         messages: [
@@ -45,7 +76,7 @@ export default function SuggestionScreen() {
 
       const result =
         completion.choices[0]?.message?.content ||
-        "Sorry, I couldn’t generate suggestions.";
+        "Sorry, I couldn't generate suggestions.";
 
       // Convert GPT output into an array of song strings
       const songList = result
