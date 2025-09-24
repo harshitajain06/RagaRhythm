@@ -363,16 +363,19 @@ const styles = StyleSheet.create({
   },
   userInfo: {
     flex: 1,
+    alignItems: 'center',
   },
   userName: {
     fontSize: 20,
     fontWeight: 'bold',
     color: '#fff',
     marginBottom: 4,
+    textAlign: 'center',
   },
   userEmail: {
     fontSize: 14,
     color: '#aaa',
+    textAlign: 'center',
   },
   
   // Section
