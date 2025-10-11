@@ -158,12 +158,15 @@ export default function YouTubeHomeScreen() {
         useProxy: true,
       });
 
-      console.log("Auth Result:", result);
+      console.log("✅ Auth Result:", result);
+      console.log("📋 Result type:", result.type);
+      console.log("📋 Full result:", JSON.stringify(result, null, 2));
 
       if (result.type === "success") {
         const { access_token } = result.params;
 
         if (access_token) {
+          console.log("🎉 Access token received!");
           // Store the token
           await AsyncStorage.setItem("youtube_access_token", access_token);
           setAccessToken(access_token);
@@ -177,10 +180,17 @@ export default function YouTubeHomeScreen() {
           throw new Error("No access token received");
         }
       } else if (result.type === "error") {
-        throw new Error(result.error?.message || "Authentication failed");
-      } else {
+        console.error("❌ Auth error:", result.error);
+        console.error("❌ Error params:", result.params);
+        throw new Error(result.error?.message || result.params?.error_description || "Authentication failed");
+      } else if (result.type === "dismiss" || result.type === "cancel") {
         // User cancelled
-        console.log("User cancelled authentication");
+        console.log("⚠️ User cancelled authentication");
+        setLoading(false);
+        return;
+      } else {
+        console.warn("⚠️ Unknown result type:", result.type);
+        console.warn("Full result:", result);
       }
     } catch (err) {
       console.error("Authentication error:", err);
