@@ -23,50 +23,203 @@ const YOUTUBE_API_KEY = "AIzaSyCGz_3lXwrvLSKjep6YuSYp-P4mxzlCss8";
 // ⚠️ For user authentication, add your OAuth Client ID from Google Cloud Console
 const GOOGLE_CLIENT_ID = "348329748433-ir1rt27jb75fsjpjm8957p9kgo4kukbl.apps.googleusercontent.com";
 
-// You can change this to any YouTube playlist ID or use 'mostPopular' for trending videos
-const YOUTUBE_PLAYLIST_ID = "PLFgquLnL59alCl_2TQvOiD5Vgm1hCaGSI"; // Example: YouTube Music Official Chart
+// 🎵 Global Music Categories - Rotates daily
+// Using YouTube Search API instead of playlists (more reliable!)
+const INDIAN_MUSIC_CATEGORIES = [
+  // Indian Music - Hindi/Bollywood
+  { query: "Bollywood songs 2024", name: "🇮🇳 Bollywood Hits 2024", region: "IN" },
+  { query: "Arijit Singh songs", name: "🇮🇳 Best of Arijit Singh", region: "IN" },
+  { query: "90s Bollywood songs", name: "🇮🇳 90s Bollywood Classics", region: "IN" },
+  { query: "romantic Hindi songs", name: "🇮🇳 Romantic Hindi Songs", region: "IN" },
+  { query: "AR Rahman songs", name: "🇮🇳 A.R. Rahman Hits", region: "IN" },
+  { query: "Kishore Kumar songs", name: "🇮🇳 Kishore Kumar Classics", region: "IN" },
+  { query: "Lata Mangeshkar songs", name: "🇮🇳 Lata Mangeshkar", region: "IN" },
+  { query: "old Hindi songs", name: "🇮🇳 Old Hindi Classics", region: "IN" },
+  { query: "Shreya Ghoshal songs", name: "🇮🇳 Shreya Ghoshal", region: "IN" },
+  { query: "Sonu Nigam songs", name: "🇮🇳 Sonu Nigam Hits", region: "IN" },
+  
+  // Indian Music - Regional
+  { query: "Punjabi songs 2024", name: "🇮🇳 Latest Punjabi Music", region: "IN" },
+  { query: "Tamil songs 2024", name: "🇮🇳 Tamil Hits", region: "IN" },
+  { query: "Telugu songs 2024", name: "🇮🇳 Telugu Music", region: "IN" },
+  { query: "Bengali songs", name: "🇮🇳 Bengali Music", region: "IN" },
+  { query: "Marathi songs", name: "🇮🇳 Marathi Songs", region: "IN" },
+  { query: "Malayalam songs", name: "🇮🇳 Malayalam Hits", region: "IN" },
+  { query: "Kannada songs", name: "🇮🇳 Kannada Music", region: "IN" },
+  { query: "Bhojpuri songs", name: "🇮🇳 Bhojpuri Hits", region: "IN" },
+  { query: "Gujarati songs", name: "🇮🇳 Gujarati Music", region: "IN" },
+  
+  // Indian Music - Genres & Styles
+  { query: "Indian classical music", name: "🇮🇳 Classical Indian Music", region: "IN" },
+  { query: "Desi hip hop rap", name: "🇮🇳 Desi Hip Hop", region: "IN" },
+  { query: "Sufi songs", name: "🇮🇳 Sufi Music", region: "IN" },
+  { query: "Ghazal songs", name: "🇮🇳 Ghazals", region: "IN" },
+  { query: "Bhangra songs", name: "🇮🇳 Bhangra", region: "IN" },
+  { query: "Indian folk music", name: "🇮🇳 Folk Music", region: "IN" },
+  { query: "Qawwali songs", name: "🇮🇳 Qawwali", region: "IN" },
+  { query: "Indipop songs", name: "🇮🇳 Indi-Pop", region: "IN" },
+  { query: "Bollywood party songs", name: "🇮🇳 Bollywood Party", region: "IN" },
+  { query: "Devotional Hindi songs", name: "🇮🇳 Devotional Music", region: "IN" },
+  
+  // Korean Music (K-Pop)
+  { query: "K-pop 2024", name: "🇰🇷 K-Pop Hits", region: "KR" },
+  { query: "BTS songs", name: "🇰🇷 BTS", region: "KR" },
+  { query: "Blackpink songs", name: "🇰🇷 BLACKPINK", region: "KR" },
+  { query: "Seventeen kpop", name: "🇰🇷 Seventeen", region: "KR" },
+  { query: "NewJeans kpop", name: "🇰🇷 NewJeans", region: "KR" },
+  { query: "Stray Kids", name: "🇰🇷 Stray Kids", region: "KR" },
+  
+  // Latin Music
+  { query: "reggaeton 2024", name: "🇨🇴 Reggaeton Hits", region: "MX" },
+  { query: "Bad Bunny songs", name: "🇵🇷 Bad Bunny", region: "MX" },
+  { query: "Latin pop 2024", name: "🌎 Latin Pop", region: "MX" },
+  { query: "Shakira songs", name: "🇨🇴 Shakira", region: "CO" },
+  { query: "salsa music", name: "💃 Salsa", region: "MX" },
+  { query: "bachata music", name: "🎶 Bachata", region: "MX" },
+  { query: "J Balvin songs", name: "🇨🇴 J Balvin", region: "CO" },
+  
+  // Arabic Music
+  { query: "Arabic pop songs 2024", name: "🇪🇬 Arabic Pop", region: "AE" },
+  { query: "Arabic music", name: "🇸🇦 Arabic Hits", region: "AE" },
+  { query: "Amr Diab songs", name: "🇪🇬 Amr Diab", region: "EG" },
+  { query: "Arabic love songs", name: "💕 Arabic Love Songs", region: "AE" },
+  
+  // African Music
+  { query: "Afrobeats 2024", name: "🇳🇬 Afrobeats", region: "NG" },
+  { query: "Amapiano 2024", name: "🇿🇦 Amapiano", region: "ZA" },
+  { query: "Burna Boy songs", name: "🇳🇬 Burna Boy", region: "NG" },
+  { query: "Wizkid songs", name: "🇳🇬 Wizkid", region: "NG" },
+  
+  // Japanese Music
+  { query: "J-pop 2024", name: "🇯🇵 J-Pop", region: "JP" },
+  { query: "anime songs", name: "🇯🇵 Anime Music", region: "JP" },
+  { query: "city pop japan", name: "🇯🇵 City Pop", region: "JP" },
+  
+  // Turkish Music
+  { query: "Turkish pop songs 2024", name: "🇹🇷 Turkish Pop", region: "TR" },
+  { query: "Turkish music", name: "🇹🇷 Turkish Hits", region: "TR" },
+  
+  // Brazilian Music
+  { query: "Brazilian funk 2024", name: "🇧🇷 Brazilian Funk", region: "BR" },
+  { query: "samba music", name: "🇧🇷 Samba", region: "BR" },
+  { query: "bossa nova", name: "🇧🇷 Bossa Nova", region: "BR" },
+  
+  // French Music
+  { query: "French pop music", name: "🇫🇷 French Pop", region: "FR" },
+  { query: "French songs 2024", name: "🇫🇷 French Hits", region: "FR" },
+  
+  // Spanish Music
+  { query: "Spanish pop songs", name: "🇪🇸 Spanish Pop", region: "ES" },
+  { query: "flamenco music", name: "🇪🇸 Flamenco", region: "ES" },
+  
+  // Italian Music
+  { query: "Italian pop songs", name: "🇮🇹 Italian Pop", region: "IT" },
+  { query: "Italian music 2024", name: "🇮🇹 Italian Hits", region: "IT" },
+  
+  // German Music
+  { query: "German pop songs", name: "🇩🇪 German Pop", region: "DE" },
+  { query: "Deutsch rap", name: "🇩🇪 German Rap", region: "DE" },
+  
+  // UK Music
+  { query: "UK drill music", name: "🇬🇧 UK Drill", region: "GB" },
+  { query: "British pop songs", name: "🇬🇧 British Pop", region: "GB" },
+  { query: "grime music", name: "🇬🇧 Grime", region: "GB" },
+  
+  // Caribbean Music
+  { query: "dancehall music", name: "🇯🇲 Dancehall", region: "JM" },
+  { query: "reggae music", name: "🇯🇲 Reggae", region: "JM" },
+  { query: "soca music", name: "🌴 Soca", region: "TT" },
+  
+  // International Pop & Electronic
+  { query: "top pop songs 2024", name: "🌍 Global Pop Hits", region: "US" },
+  { query: "EDM music 2024", name: "🎧 EDM & Dance", region: "US" },
+  { query: "house music", name: "🏠 House Music", region: "US" },
+  { query: "techno music", name: "⚡ Techno", region: "DE" },
+  { query: "trance music", name: "🌊 Trance", region: "NL" },
+  { query: "dubstep music", name: "🔊 Dubstep", region: "GB" },
+  
+  // US Music - Hip Hop & R&B
+  { query: "hip hop 2024", name: "🎤 Hip Hop", region: "US" },
+  { query: "R&B songs 2024", name: "🎵 R&B Vibes", region: "US" },
+  { query: "trap music 2024", name: "💎 Trap Music", region: "US" },
+  { query: "old school hip hop", name: "📻 Old School Hip Hop", region: "US" },
+  { query: "Drake songs", name: "🇨🇦 Drake", region: "US" },
+  { query: "Kendrick Lamar", name: "🎤 Kendrick Lamar", region: "US" },
+  
+  // US Music - Other Genres
+  { query: "country music 2024", name: "🤠 Country Music", region: "US" },
+  { query: "rock music classic", name: "🎸 Classic Rock", region: "US" },
+  { query: "alternative rock", name: "🎸 Alternative Rock", region: "US" },
+  { query: "indie music 2024", name: "🎨 Indie Music", region: "US" },
+  { query: "jazz music", name: "🎷 Jazz", region: "US" },
+  { query: "blues music", name: "🎺 Blues", region: "US" },
+  { query: "soul music", name: "✨ Soul Music", region: "US" },
+  { query: "funk music", name: "🕺 Funk", region: "US" },
+  { query: "metal music", name: "🤘 Metal", region: "US" },
+  
+  // Classic & Timeless
+  { query: "80s music hits", name: "📼 80s Classics", region: "US" },
+  { query: "90s music hits", name: "💿 90s Hits", region: "US" },
+  { query: "2000s pop songs", name: "📱 2000s Pop", region: "US" },
+  { query: "disco music", name: "🪩 Disco", region: "US" },
+  
+  // Relaxing & Mood Music
+  { query: "lofi hip hop", name: "☕ Lo-Fi Beats", region: "US" },
+  { query: "chill music", name: "😌 Chill Vibes", region: "US" },
+  { query: "acoustic music", name: "🎸 Acoustic", region: "US" },
+  { query: "piano music relaxing", name: "🎹 Piano Relaxation", region: "US" },
+  { query: "meditation music", name: "🧘 Meditation", region: "US" },
+];
+
+// Function to get today's music category based on day of year
+const getTodaysCategory = () => {
+  const now = new Date();
+  const start = new Date(now.getFullYear(), 0, 0);
+  const diff = now - start;
+  const oneDay = 1000 * 60 * 60 * 24;
+  const dayOfYear = Math.floor(diff / oneDay);
+  
+  const index = dayOfYear % INDIAN_MUSIC_CATEGORIES.length;
+  return INDIAN_MUSIC_CATEGORIES[index];
+};
+
+// Get today's Indian music category
+const todaysCategory = getTodaysCategory();
 
 // Mode: 'public' or 'user'
-const MODE = "user"; // Change to 'user' to fetch current user's playlists
+const MODE = "public"; // Change to 'user' to fetch current user's playlists
 
 export default function YouTubeHomeScreen() {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [playlistTitle, setPlaylistTitle] = useState("Trending Music");
+  const [playlistTitle, setPlaylistTitle] = useState(todaysCategory.name);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [accessToken, setAccessToken] = useState(null);
   const [userPlaylists, setUserPlaylists] = useState([]);
   const [selectedPlaylist, setSelectedPlaylist] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(todaysCategory.query);
 
-  // 🎥 Fetch YouTube Videos
-  const fetchYouTubeVideos = async () => {
+  // 🎵 Search for Music Videos by Category
+  const searchIndianMusic = async (searchQuery = todaysCategory.query, categoryName = todaysCategory.name, regionCode = todaysCategory.region) => {
     try {
-      // Option 1: Fetch from a specific playlist
-      const playlistResponse = await fetch(
-        `https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&maxResults=25&playlistId=${YOUTUBE_PLAYLIST_ID}&key=${YOUTUBE_API_KEY}`
-      );
-
-      const playlistData = await playlistResponse.json();
-
-      if (playlistData.error) {
-        throw new Error(playlistData.error.message || "Failed to fetch videos");
-      }
-
-      // Get playlist details
-      const playlistDetailsResponse = await fetch(
-        `https://www.googleapis.com/youtube/v3/playlists?part=snippet&id=${YOUTUBE_PLAYLIST_ID}&key=${YOUTUBE_API_KEY}`
-      );
-
-      const playlistDetailsData = await playlistDetailsResponse.json();
+      setLoading(true);
+      setError(null);
       
-      if (playlistDetailsData.items && playlistDetailsData.items.length > 0) {
-        setPlaylistTitle(playlistDetailsData.items[0].snippet.title);
+      const response = await fetch(
+        `https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=25&q=${encodeURIComponent(searchQuery)}&type=video&videoCategoryId=10&regionCode=${regionCode}&key=${YOUTUBE_API_KEY}`
+      );
+
+      const data = await response.json();
+
+      if (data.error) {
+        console.error("Search failed:", data.error);
+        throw new Error(data.error.message || "Failed to search videos");
       }
 
       // Format the data
-      const formattedVideos = playlistData.items?.map((item) => ({
-        id: item.contentDetails?.videoId || item.id,
+      const formattedVideos = data.items?.map((item) => ({
+        id: item.id?.videoId || item.id,
         title: item.snippet?.title,
         channel: item.snippet?.channelTitle,
         thumbnail: item.snippet?.thumbnails?.medium?.url || item.snippet?.thumbnails?.default?.url,
@@ -74,43 +227,50 @@ export default function YouTubeHomeScreen() {
       })) || [];
 
       setVideos(formattedVideos);
+      setPlaylistTitle(categoryName);
+      setSelectedCategory(searchQuery);
     } catch (err) {
       setError(err.message);
-      console.error("YouTube fetch error:", err);
+      console.error("YouTube search error:", err);
+      // Try fallback to trending
+      try {
+        await fetchPopularMusicVideos();
+      } catch (fallbackErr) {
+        console.error("Fallback also failed:", fallbackErr);
+      }
     } finally {
       setLoading(false);
     }
   };
 
-  // Alternative: Fetch Most Popular Videos (uncomment to use)
-  // const fetchPopularVideos = async () => {
-  //   try {
-  //     const response = await fetch(
-  //       `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&chart=mostPopular&regionCode=US&videoCategoryId=10&maxResults=25&key=${YOUTUBE_API_KEY}`
-  //     );
-  //
-  //     const data = await response.json();
-  //
-  //     if (data.error) {
-  //       throw new Error(data.error.message || "Failed to fetch videos");
-  //     }
-  //
-  //     const formattedVideos = data.items?.map((item) => ({
-  //       id: item.id,
-  //       title: item.snippet?.title,
-  //       channel: item.snippet?.channelTitle,
-  //       thumbnail: item.snippet?.thumbnails?.medium?.url,
-  //       publishedAt: item.snippet?.publishedAt,
-  //     })) || [];
-  //
-  //     setVideos(formattedVideos);
-  //   } catch (err) {
-  //     setError(err.message);
-  //     console.error("YouTube fetch error:", err);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+  // Fallback: Fetch popular music videos from India
+  const fetchPopularMusicVideos = async () => {
+    try {
+      const response = await fetch(
+        `https://www.googleapis.com/youtube/v3/videos?part=snippet,contentDetails&chart=mostPopular&regionCode=IN&videoCategoryId=10&maxResults=25&key=${YOUTUBE_API_KEY}`
+      );
+
+      const data = await response.json();
+
+      if (data.error) {
+        throw new Error(data.error.message || "Failed to fetch videos");
+      }
+
+      const formattedVideos = data.items?.map((item) => ({
+        id: item.id,
+        title: item.snippet?.title,
+        channel: item.snippet?.channelTitle,
+        thumbnail: item.snippet?.thumbnails?.medium?.url,
+        publishedAt: item.snippet?.publishedAt,
+      })) || [];
+
+      setVideos(formattedVideos);
+      setPlaylistTitle("Trending Music in India");
+    } catch (err) {
+      throw err;
+    }
+  };
+
 
   // 🔗 Open video in YouTube app or browser
   const openVideo = (videoId) => {
@@ -239,6 +399,8 @@ export default function YouTubeHomeScreen() {
   const loadPlaylistVideos = async (playlistId, token = null) => {
     try {
       setLoading(true);
+      setError(null);
+      
       const headers = token
         ? { Authorization: `Bearer ${token}` }
         : {};
@@ -251,6 +413,12 @@ export default function YouTubeHomeScreen() {
       const data = await response.json();
 
       if (data.error) {
+        console.warn("Playlist load failed:", data.error.message);
+        // Fallback to popular music
+        if (!token) {
+          await fetchPopularMusicVideos();
+          return;
+        }
         throw new Error(data.error.message || "Failed to fetch videos");
       }
 
@@ -302,8 +470,8 @@ export default function YouTubeHomeScreen() {
           // Show login prompt
         }
       } else {
-        // Public mode - fetch public playlist
-        fetchYouTubeVideos();
+        // Public mode - search for today's Indian music category
+        searchIndianMusic();
       }
     };
 
@@ -380,7 +548,13 @@ export default function YouTubeHomeScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>{playlistTitle}</Text>
+        <View style={styles.headerTextContainer}>
+          <Text style={styles.subtitle}>🎵 Today's Featured Music</Text>
+          <Text style={styles.title}>{playlistTitle}</Text>
+          <Text style={styles.playlistInfo}>
+            {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })} • Changes Daily
+          </Text>
+        </View>
         {MODE === "user" && isAuthenticated && (
           <TouchableOpacity
             style={styles.signOutButton}
@@ -396,6 +570,41 @@ export default function YouTubeHomeScreen() {
           </TouchableOpacity>
         )}
       </View>
+
+      {/* Global Music Categories Selector (Public Mode) */}
+      {MODE === "public" && (
+        <View style={styles.playlistSelector}>
+          <Text style={styles.selectorTitle}>🌍 Explore Music from Around the World:</Text>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {INDIAN_MUSIC_CATEGORIES.map((category) => (
+              <TouchableOpacity
+                key={category.query}
+                style={[
+                  styles.playlistChip,
+                  selectedCategory === category.query && styles.playlistChipActive,
+                ]}
+                onPress={() => {
+                  searchIndianMusic(category.query, category.name, category.region);
+                }}
+              >
+                {todaysCategory.query === category.query && (
+                  <Text style={styles.todayBadge}>TODAY</Text>
+                )}
+                <Text
+                  style={[
+                    styles.playlistChipText,
+                    selectedCategory === category.query &&
+                      styles.playlistChipTextActive,
+                  ]}
+                  numberOfLines={1}
+                >
+                  {category.name}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        </View>
+      )}
 
       {/* User Playlists Selector */}
       {MODE === "user" && userPlaylists.length > 0 && (
@@ -469,15 +678,31 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 8,
+    alignItems: "flex-start",
+    marginBottom: 12,
     marginTop: 8,
   },
+  headerTextContainer: {
+    flex: 1,
+    marginRight: 8,
+  },
+  subtitle: {
+    fontSize: 12,
+    color: "#aaa",
+    marginBottom: 4,
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
+  },
   title: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: "bold",
     color: "#FF0000",
-    flex: 1,
+    marginBottom: 4,
+  },
+  playlistInfo: {
+    fontSize: 12,
+    color: "#888",
+    fontStyle: "italic",
   },
   signOutButton: {
     paddingHorizontal: 12,
@@ -493,13 +718,33 @@ const styles = StyleSheet.create({
   playlistSelector: {
     marginBottom: 16,
   },
+  selectorTitle: {
+    fontSize: 14,
+    color: "#fff",
+    marginBottom: 8,
+    fontWeight: "600",
+  },
   playlistChip: {
     backgroundColor: "#282828",
     paddingHorizontal: 16,
     paddingVertical: 8,
     borderRadius: 20,
     marginRight: 8,
-    maxWidth: 200,
+    maxWidth: 250,
+    position: "relative",
+  },
+  todayBadge: {
+    position: "absolute",
+    top: -6,
+    right: 8,
+    backgroundColor: "#FFD700",
+    color: "#000",
+    fontSize: 9,
+    fontWeight: "800",
+    paddingHorizontal: 4,
+    paddingVertical: 2,
+    borderRadius: 4,
+    zIndex: 1,
   },
   playlistChipActive: {
     backgroundColor: "#FF0000",
