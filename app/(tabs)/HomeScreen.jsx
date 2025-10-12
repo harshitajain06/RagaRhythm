@@ -5,9 +5,12 @@ import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
+  Dimensions,
   FlatList,
   Image,
   Linking,
+  Modal,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -16,6 +19,14 @@ import {
 } from "react-native";
 
 WebBrowser.maybeCompleteAuthSession();
+
+// 📱 Responsive Design Configuration
+// - Mobile (< 768px): 2 columns, compact cards
+// - Tablet (768-1023px): 4 columns, medium cards  
+// - Desktop (≥ 1024px): 6 columns, large cards with enhanced spacing
+const { width: SCREEN_WIDTH } = Dimensions.get("window");
+const isWeb = Platform.OS === "web";
+const isLargeScreen = SCREEN_WIDTH > 768;
 
 // ⚠️ Replace with your YouTube Data API v3 key from https://console.cloud.google.com/
 const YOUTUBE_API_KEY = "AIzaSyCGz_3lXwrvLSKjep6YuSYp-P4mxzlCss8";
@@ -199,6 +210,7 @@ export default function YouTubeHomeScreen() {
   const [userPlaylists, setUserPlaylists] = useState([]);
   const [selectedPlaylist, setSelectedPlaylist] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(todaysCategory.query);
+  const [showCategoriesModal, setShowCategoriesModal] = useState(false);
 
   // 🎵 Search for Music Videos by Category
   const searchIndianMusic = async (searchQuery = todaysCategory.query, categoryName = todaysCategory.name, regionCode = todaysCategory.region) => {
@@ -550,7 +562,7 @@ export default function YouTubeHomeScreen() {
       <View style={styles.header}>
         <View style={styles.headerTextContainer}>
           <Text style={styles.subtitle}>🎵 Today's Featured Music</Text>
-          <Text style={styles.title}>{playlistTitle}</Text>
+        <Text style={styles.title}>{playlistTitle}</Text>
           <Text style={styles.playlistInfo}>
             {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })} • Changes Daily
           </Text>
@@ -571,40 +583,95 @@ export default function YouTubeHomeScreen() {
         )}
       </View>
 
-      {/* Global Music Categories Selector (Public Mode) */}
+      {/* Browse Categories Button (Public Mode) */}
       {MODE === "public" && (
-        <View style={styles.playlistSelector}>
-          <Text style={styles.selectorTitle}>🌍 Explore Music from Around the World:</Text>
-          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-            {INDIAN_MUSIC_CATEGORIES.map((category) => (
-              <TouchableOpacity
-                key={category.query}
-                style={[
-                  styles.playlistChip,
-                  selectedCategory === category.query && styles.playlistChipActive,
-                ]}
-                onPress={() => {
-                  searchIndianMusic(category.query, category.name, category.region);
-                }}
-              >
-                {todaysCategory.query === category.query && (
-                  <Text style={styles.todayBadge}>TODAY</Text>
-                )}
-                <Text
-                  style={[
-                    styles.playlistChipText,
-                    selectedCategory === category.query &&
-                      styles.playlistChipTextActive,
-                  ]}
-                  numberOfLines={1}
-                >
-                  {category.name}
+        <TouchableOpacity
+          style={styles.browseCategoriesButton}
+          onPress={() => setShowCategoriesModal(true)}
+          activeOpacity={0.8}
+        >
+          <View style={styles.browseCategoriesContent}>
+            <View style={styles.browseCategoriesLeft}>
+              <Text style={styles.browseCategoriesIcon}>🌍</Text>
+              <View>
+                <Text style={styles.browseCategoriesTitle}>Browse Music Categories</Text>
+                <Text style={styles.browseCategoriesSubtitle}>
+                  {INDIAN_MUSIC_CATEGORIES.length} categories from around the world
                 </Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        </View>
+              </View>
+            </View>
+            <Text style={styles.browseCategoriesArrow}>›</Text>
+          </View>
+        </TouchableOpacity>
       )}
+
+      {/* Categories Modal */}
+      <Modal
+        visible={showCategoriesModal}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setShowCategoriesModal(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            {/* Modal Header */}
+            <View style={styles.modalHeader}>
+              <View>
+                <Text style={styles.modalTitle}>🌍 Music Categories</Text>
+                <Text style={styles.modalSubtitle}>
+                  {INDIAN_MUSIC_CATEGORIES.length} categories • Tap to explore
+                </Text>
+              </View>
+              <TouchableOpacity
+                style={styles.closeButton}
+                onPress={() => setShowCategoriesModal(false)}
+                activeOpacity={0.7}
+              >
+                <Text style={styles.closeButtonText}>✕</Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Categories Grid */}
+            <ScrollView
+              style={styles.modalScrollView}
+              contentContainerStyle={styles.modalCategoriesGrid}
+              showsVerticalScrollIndicator={true}
+            >
+              {INDIAN_MUSIC_CATEGORIES.map((category) => (
+                <TouchableOpacity
+                  key={category.query}
+                  style={[
+                    styles.modalCategoryCard,
+                    selectedCategory === category.query && styles.modalCategoryCardActive,
+                  ]}
+                  onPress={() => {
+                    searchIndianMusic(category.query, category.name, category.region);
+                    setShowCategoriesModal(false);
+                  }}
+                  activeOpacity={0.7}
+                >
+                  {todaysCategory.query === category.query && (
+                    <View style={styles.todayBadgeContainer}>
+                      <Text style={styles.todayBadge}>⭐ TODAY</Text>
+                    </View>
+                  )}
+                  <Text
+                    style={[
+                      styles.modalCategoryCardText,
+                      selectedCategory === category.query &&
+                        styles.modalCategoryCardTextActive,
+                    ]}
+                    numberOfLines={2}
+                    ellipsizeMode="tail"
+                  >
+                    {category.name}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
 
       {/* User Playlists Selector */}
       {MODE === "user" && userPlaylists.length > 0 && (
@@ -668,6 +735,9 @@ export default function YouTubeHomeScreen() {
   );
 }
 
+// Additional responsive breakpoint
+const isExtraLargeScreen = SCREEN_WIDTH >= 1024; // Desktop
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -715,14 +785,210 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "600",
   },
+  // Browse Categories Button
+  browseCategoriesButton: {
+    backgroundColor: "#1a1a1a",
+    borderRadius: 16,
+    padding: 18,
+    marginBottom: 16,
+    borderWidth: 2,
+    borderColor: "#2a2a2a",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 3,
+    ...(isWeb && {
+      cursor: "pointer",
+      transition: "all 0.2s ease",
+    }),
+  },
+  browseCategoriesContent: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  browseCategoriesLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+  },
+  browseCategoriesIcon: {
+    fontSize: 32,
+    marginRight: 16,
+  },
+  browseCategoriesTitle: {
+    fontSize: isLargeScreen ? 18 : 16,
+    fontWeight: "700",
+    color: "#fff",
+    marginBottom: 4,
+  },
+  browseCategoriesSubtitle: {
+    fontSize: 13,
+    color: "#888",
+    fontWeight: "500",
+  },
+  browseCategoriesArrow: {
+    fontSize: 32,
+    color: "#FF0000",
+    fontWeight: "300",
+  },
+  // Modal Styles
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.85)",
+    justifyContent: "flex-end",
+    ...(isLargeScreen && {
+      justifyContent: "center",
+      alignItems: "center",
+    }),
+  },
+  modalContent: {
+    backgroundColor: "#0f0f0f",
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
+    maxHeight: "90%",
+    ...(isLargeScreen && {
+      borderRadius: 24,
+      maxHeight: "85%",
+      width: "90%",
+      maxWidth: 1200,
+    }),
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: -4 },
+    shadowOpacity: 0.5,
+    shadowRadius: 12,
+    elevation: 10,
+  },
+  modalHeader: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    padding: 24,
+    borderBottomWidth: 1,
+    borderBottomColor: "#2a2a2a",
+  },
+  modalTitle: {
+    fontSize: isLargeScreen ? 24 : 20,
+    fontWeight: "800",
+    color: "#fff",
+    marginBottom: 4,
+  },
+  modalSubtitle: {
+    fontSize: 14,
+    color: "#888",
+    fontWeight: "500",
+  },
+  closeButton: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: "#282828",
+    justifyContent: "center",
+    alignItems: "center",
+    marginLeft: 12,
+    ...(isWeb && {
+      cursor: "pointer",
+    }),
+  },
+  closeButtonText: {
+    fontSize: 22,
+    color: "#fff",
+    fontWeight: "400",
+  },
+  modalScrollView: {
+    flex: 1,
+  },
+  modalCategoriesGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    padding: 20,
+    gap: isExtraLargeScreen ? 14 : isLargeScreen ? 12 : 10,
+    paddingBottom: 40,
+  },
+  modalCategoryCard: {
+    backgroundColor: "#1a1a1a",
+    paddingHorizontal: isExtraLargeScreen ? 20 : isLargeScreen ? 16 : 14,
+    paddingVertical: isExtraLargeScreen ? 16 : isLargeScreen ? 14 : 12,
+    borderRadius: 14,
+    minWidth: isExtraLargeScreen 
+      ? Math.floor((SCREEN_WIDTH * 0.85 - 120) / 6) 
+      : isLargeScreen 
+        ? Math.floor((SCREEN_WIDTH * 0.85 - 100) / 5) 
+        : Math.floor((SCREEN_WIDTH - 80) / 2),
+    maxWidth: isExtraLargeScreen ? 200 : isLargeScreen ? 180 : 170,
+    flex: isWeb ? 1 : 0,
+    flexBasis: isExtraLargeScreen 
+      ? "15%" 
+      : isLargeScreen 
+        ? "18%" 
+        : "47%",
+    minHeight: isLargeScreen ? 68 : 58,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 2,
+    borderColor: "#2a2a2a",
+    position: "relative",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 2,
+    ...(isWeb && {
+      cursor: "pointer",
+      transition: "all 0.2s ease",
+    }),
+  },
+  modalCategoryCardActive: {
+    backgroundColor: "#FF0000",
+    borderColor: "#FF4444",
+    borderWidth: 2,
+    shadowColor: "#FF0000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.6,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  modalCategoryCardText: {
+    color: "#e0e0e0",
+    fontSize: isLargeScreen ? 13.5 : 12.5,
+    fontWeight: "600",
+    textAlign: "center",
+    lineHeight: 18,
+    letterSpacing: 0.3,
+  },
+  modalCategoryCardTextActive: {
+    color: "#fff",
+    fontWeight: "800",
+    letterSpacing: 0.5,
+  },
+  todayBadgeContainer: {
+    position: "absolute",
+    top: -10,
+    right: -10,
+    zIndex: 10,
+  },
+  todayBadge: {
+    backgroundColor: "#FFD700",
+    color: "#000",
+    fontSize: isExtraLargeScreen ? 10 : isLargeScreen ? 9 : 8,
+    fontWeight: "900",
+    paddingHorizontal: isLargeScreen ? 8 : 6,
+    paddingVertical: isLargeScreen ? 4 : 3,
+    borderRadius: 10,
+    overflow: "hidden",
+    letterSpacing: 0.8,
+    borderWidth: 1.5,
+    borderColor: "#000",
+    shadowColor: "#FFD700",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.6,
+    shadowRadius: 3,
+    elevation: 3,
+  },
+  // Old Playlist Selector (for user mode)
   playlistSelector: {
     marginBottom: 16,
-  },
-  selectorTitle: {
-    fontSize: 14,
-    color: "#fff",
-    marginBottom: 8,
-    fontWeight: "600",
   },
   playlistChip: {
     backgroundColor: "#282828",
@@ -732,19 +998,6 @@ const styles = StyleSheet.create({
     marginRight: 8,
     maxWidth: 250,
     position: "relative",
-  },
-  todayBadge: {
-    position: "absolute",
-    top: -6,
-    right: 8,
-    backgroundColor: "#FFD700",
-    color: "#000",
-    fontSize: 9,
-    fontWeight: "800",
-    paddingHorizontal: 4,
-    paddingVertical: 2,
-    borderRadius: 4,
-    zIndex: 1,
   },
   playlistChipActive: {
     backgroundColor: "#FF0000",
