@@ -16,6 +16,7 @@ export default function ProfileScreen() {
   const [songs, setSongs] = useState([]);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [expandedCategories, setExpandedCategories] = useState({});
   const isWeb = Platform.OS === 'web';
 
   // Function to categorize songs based on content analysis
@@ -25,6 +26,22 @@ export default function ProfileScreen() {
       'Folk': [],
       'Devotional': [],
       'Fusion': [],
+      'Ghazal': [],
+      'Qawwali': [],
+      'Film/Bollywood': [],
+      'Instrumental': [],
+      'Semi-Classical': [],
+      'Regional': [],
+      'Pop': [],
+      'Rock': [],
+      'Hip-Hop/Rap': [],
+      'R&B/Soul': [],
+      'Electronic/EDM': [],
+      'Jazz': [],
+      'Country': [],
+      'Metal': [],
+      'Blues': [],
+      'Alternative/Indie': [],
       'Other': []
     };
 
@@ -105,23 +122,271 @@ export default function ProfileScreen() {
                combinedText.includes('malayalam')) {
         category = 'Folk';
       }
+      // Ghazal music keywords
+      else if (combinedText.includes('ghazal') || 
+               combinedText.includes('urdu') || 
+               combinedText.includes('nazm') || 
+               combinedText.includes('shayari') ||
+               combinedText.includes('mehdi hassan') ||
+               combinedText.includes('jagjit singh') ||
+               combinedText.includes('ghulam ali') ||
+               combinedText.includes('pankaj udhas') ||
+               combinedText.includes('talat aziz')) {
+        category = 'Ghazal';
+      }
+      // Qawwali music keywords
+      else if (combinedText.includes('qawwali') || 
+               combinedText.includes('nusrat') || 
+               combinedText.includes('rahat fateh') || 
+               combinedText.includes('dargah') ||
+               combinedText.includes('nizami') ||
+               combinedText.includes('sabri') ||
+               combinedText.includes('aziz mian') ||
+               combinedText.includes('wadali')) {
+        category = 'Qawwali';
+      }
+      // Film/Bollywood music keywords
+      else if (combinedText.includes('film') || 
+               combinedText.includes('bollywood') || 
+               combinedText.includes('movie') || 
+               combinedText.includes('cinema') ||
+               combinedText.includes('soundtrack') ||
+               combinedText.includes('playback') ||
+               combinedText.includes('lata mangeshkar') ||
+               combinedText.includes('kishore kumar') ||
+               combinedText.includes('mohd rafi') ||
+               combinedText.includes('asha bhosle') ||
+               combinedText.includes('kumar sanu') ||
+               combinedText.includes('alka yagnik') ||
+               combinedText.includes('arijit singh') ||
+               combinedText.includes('shreya ghoshal') ||
+               combinedText.includes('sonu nigam')) {
+        category = 'Film/Bollywood';
+      }
+      // Instrumental music keywords
+      else if (combinedText.includes('instrumental') || 
+               combinedText.includes('orchestra') || 
+               combinedText.includes('symphony') || 
+               combinedText.includes('concerto') ||
+               combinedText.includes('ensemble') ||
+               combinedText.includes('pure music') ||
+               combinedText.includes('without vocals') ||
+               combinedText.includes('no lyrics')) {
+        category = 'Instrumental';
+      }
+      // Semi-Classical music keywords
+      else if (combinedText.includes('thumri') || 
+               combinedText.includes('dadra') || 
+               combinedText.includes('tappa') || 
+               combinedText.includes('chaiti') ||
+               combinedText.includes('kajri') ||
+               combinedText.includes('hori') ||
+               combinedText.includes('tillana') ||
+               combinedText.includes('javali') ||
+               combinedText.includes('padam') ||
+               combinedText.includes('varnam') ||
+               combinedText.includes('light classical') ||
+               combinedText.includes('semi classical')) {
+        category = 'Semi-Classical';
+      }
+      // Regional music keywords
+      else if (combinedText.includes('regional') || 
+               combinedText.includes('assamese') || 
+               combinedText.includes('oriya') || 
+               combinedText.includes('sindhi') ||
+               combinedText.includes('kashmiri') ||
+               combinedText.includes('konkani') ||
+               combinedText.includes('manipuri') ||
+               combinedText.includes('nagaland') ||
+               combinedText.includes('tribal') ||
+               combinedText.includes('goan') ||
+               combinedText.includes('rajasthani') ||
+               combinedText.includes('haryanvi') ||
+               combinedText.includes('bihari')) {
+        category = 'Regional';
+      }
+      // Pop music keywords
+      else if (combinedText.includes('pop') || 
+               combinedText.includes('taylor swift') || 
+               combinedText.includes('ariana grande') || 
+               combinedText.includes('billie eilish') ||
+               combinedText.includes('dua lipa') ||
+               combinedText.includes('ed sheeran') ||
+               combinedText.includes('bruno mars') ||
+               combinedText.includes('the weeknd') ||
+               combinedText.includes('justin bieber') ||
+               combinedText.includes('katy perry') ||
+               combinedText.includes('lady gaga') ||
+               combinedText.includes('miley cyrus') ||
+               combinedText.includes('selena gomez') ||
+               combinedText.includes('shawn mendes') ||
+               combinedText.includes('harry styles')) {
+        category = 'Pop';
+      }
+      // Rock music keywords
+      else if (combinedText.includes('rock') || 
+               combinedText.includes('guitar solo') || 
+               combinedText.includes('heavy guitar') || 
+               combinedText.includes('queen') ||
+               combinedText.includes('the beatles') ||
+               combinedText.includes('led zeppelin') ||
+               combinedText.includes('pink floyd') ||
+               combinedText.includes('rolling stones') ||
+               combinedText.includes('nirvana') ||
+               combinedText.includes('foo fighters') ||
+               combinedText.includes('linkin park') ||
+               combinedText.includes('imagine dragons') ||
+               combinedText.includes('coldplay') ||
+               combinedText.includes('radiohead')) {
+        category = 'Rock';
+      }
+      // Hip-Hop/Rap music keywords
+      else if (combinedText.includes('hip hop') || 
+               combinedText.includes('hip-hop') || 
+               combinedText.includes('rap') || 
+               combinedText.includes('rapper') ||
+               combinedText.includes('eminem') ||
+               combinedText.includes('drake') ||
+               combinedText.includes('kendrick lamar') ||
+               combinedText.includes('kanye west') ||
+               combinedText.includes('travis scott') ||
+               combinedText.includes('post malone') ||
+               combinedText.includes('cardi b') ||
+               combinedText.includes('nicki minaj') ||
+               combinedText.includes('lil') ||
+               combinedText.includes('tupac') ||
+               combinedText.includes('notorious b.i.g') ||
+               combinedText.includes('jay-z') ||
+               combinedText.includes('snoop dogg')) {
+        category = 'Hip-Hop/Rap';
+      }
+      // R&B/Soul music keywords
+      else if (combinedText.includes('r&b') || 
+               combinedText.includes('rnb') || 
+               combinedText.includes('soul') || 
+               combinedText.includes('smooth') ||
+               combinedText.includes('beyoncé') ||
+               combinedText.includes('rihanna') ||
+               combinedText.includes('usher') ||
+               combinedText.includes('alicia keys') ||
+               combinedText.includes('john legend') ||
+               combinedText.includes('frank ocean') ||
+               combinedText.includes('sza') ||
+               combinedText.includes('daniel caesar') ||
+               combinedText.includes('marvin gaye') ||
+               combinedText.includes('stevie wonder') ||
+               combinedText.includes('aretha franklin')) {
+        category = 'R&B/Soul';
+      }
+      // Electronic/EDM music keywords
+      else if (combinedText.includes('electronic') || 
+               combinedText.includes('edm') || 
+               combinedText.includes('techno') || 
+               combinedText.includes('house') ||
+               combinedText.includes('trance') ||
+               combinedText.includes('dubstep') ||
+               combinedText.includes('drum and bass') ||
+               combinedText.includes('dnb') ||
+               combinedText.includes('dj') ||
+               combinedText.includes('calvin harris') ||
+               combinedText.includes('avicii') ||
+               combinedText.includes('martin garrix') ||
+               combinedText.includes('david guetta') ||
+               combinedText.includes('marshmello') ||
+               combinedText.includes('skrillex') ||
+               combinedText.includes('kygo') ||
+               combinedText.includes('zedd')) {
+        category = 'Electronic/EDM';
+      }
+      // Jazz music keywords
+      else if (combinedText.includes('jazz') || 
+               combinedText.includes('swing') || 
+               combinedText.includes('bebop') || 
+               combinedText.includes('improvisation') ||
+               combinedText.includes('miles davis') ||
+               combinedText.includes('john coltrane') ||
+               combinedText.includes('louis armstrong') ||
+               combinedText.includes('ella fitzgerald') ||
+               combinedText.includes('duke ellington') ||
+               combinedText.includes('billie holiday') ||
+               combinedText.includes('chet baker') ||
+               combinedText.includes('charlie parker') ||
+               combinedText.includes('herbie hancock')) {
+        category = 'Jazz';
+      }
+      // Country music keywords
+      else if (combinedText.includes('country') || 
+               combinedText.includes('nashville') || 
+               combinedText.includes('bluegrass') || 
+               combinedText.includes('honky tonk') ||
+               combinedText.includes('taylor swift country') ||
+               combinedText.includes('johnny cash') ||
+               combinedText.includes('dolly parton') ||
+               combinedText.includes('willie nelson') ||
+               combinedText.includes('keith urban') ||
+               combinedText.includes('carrie underwood') ||
+               combinedText.includes('luke bryan') ||
+               combinedText.includes('blake shelton') ||
+               combinedText.includes('shania twain')) {
+        category = 'Country';
+      }
+      // Metal music keywords
+      else if (combinedText.includes('metal') || 
+               combinedText.includes('metallica') || 
+               combinedText.includes('iron maiden') || 
+               combinedText.includes('black sabbath') ||
+               combinedText.includes('slayer') ||
+               combinedText.includes('megadeth') ||
+               combinedText.includes('judas priest') ||
+               combinedText.includes('pantera') ||
+               combinedText.includes('slipknot') ||
+               combinedText.includes('system of a down') ||
+               combinedText.includes('death metal') ||
+               combinedText.includes('thrash') ||
+               combinedText.includes('heavy metal') ||
+               combinedText.includes('power metal')) {
+        category = 'Metal';
+      }
+      // Blues music keywords
+      else if (combinedText.includes('blues') || 
+               combinedText.includes('b.b. king') || 
+               combinedText.includes('muddy waters') || 
+               combinedText.includes('robert johnson') ||
+               combinedText.includes('john lee hooker') ||
+               combinedText.includes('howlin wolf') ||
+               combinedText.includes('buddy guy') ||
+               combinedText.includes('eric clapton blues') ||
+               combinedText.includes('delta blues') ||
+               combinedText.includes('chicago blues')) {
+        category = 'Blues';
+      }
+      // Alternative/Indie music keywords
+      else if (combinedText.includes('alternative') || 
+               combinedText.includes('indie') || 
+               combinedText.includes('grunge') || 
+               combinedText.includes('shoegaze') ||
+               combinedText.includes('post-punk') ||
+               combinedText.includes('arctic monkeys') ||
+               combinedText.includes('the strokes') ||
+               combinedText.includes('tame impala') ||
+               combinedText.includes('vampire weekend') ||
+               combinedText.includes('the killers') ||
+               combinedText.includes('florence') ||
+               combinedText.includes('lana del rey') ||
+               combinedText.includes('bon iver') ||
+               combinedText.includes('sufjan stevens')) {
+        category = 'Alternative/Indie';
+      }
       // Fusion music keywords
       else if (combinedText.includes('fusion') || 
                combinedText.includes('modern') || 
                combinedText.includes('contemporary') || 
                combinedText.includes('experimental') ||
-               combinedText.includes('jazz') ||
-               combinedText.includes('rock') ||
-               combinedText.includes('pop') ||
-               combinedText.includes('electronic') ||
-               combinedText.includes('indie') ||
-               combinedText.includes('alternative') ||
                combinedText.includes('world') ||
                combinedText.includes('ambient') ||
                combinedText.includes('chill') ||
                combinedText.includes('lounge') ||
                combinedText.includes('acoustic') ||
-               combinedText.includes('instrumental') ||
                combinedText.includes('remix') ||
                combinedText.includes('cover')) {
         category = 'Fusion';
@@ -170,12 +435,35 @@ export default function ProfileScreen() {
     return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
   };
 
+  const toggleCategory = (category) => {
+    setExpandedCategories(prev => ({
+      ...prev,
+      [category]: !prev[category]
+    }));
+  };
+
   const getCategoryIcon = (category) => {
     switch (category) {
       case 'Classical': return '📁';
       case 'Folk': return '📁';
       case 'Devotional': return '📁';
       case 'Fusion': return '📁';
+      case 'Ghazal': return '📁';
+      case 'Qawwali': return '📁';
+      case 'Film/Bollywood': return '📁';
+      case 'Instrumental': return '📁';
+      case 'Semi-Classical': return '📁';
+      case 'Regional': return '📁';
+      case 'Pop': return '📁';
+      case 'Rock': return '📁';
+      case 'Hip-Hop/Rap': return '📁';
+      case 'R&B/Soul': return '📁';
+      case 'Electronic/EDM': return '📁';
+      case 'Jazz': return '📁';
+      case 'Country': return '📁';
+      case 'Metal': return '📁';
+      case 'Blues': return '📁';
+      case 'Alternative/Indie': return '📁';
       default: return '📁';
     }
   };
@@ -186,6 +474,22 @@ export default function ProfileScreen() {
       case 'Folk': return '🎵';
       case 'Devotional': return '🙏';
       case 'Fusion': return '🎶';
+      case 'Ghazal': return '💝';
+      case 'Qawwali': return '🕌';
+      case 'Film/Bollywood': return '🎬';
+      case 'Instrumental': return '🎻';
+      case 'Semi-Classical': return '🎹';
+      case 'Regional': return '🌏';
+      case 'Pop': return '🎤';
+      case 'Rock': return '🎸';
+      case 'Hip-Hop/Rap': return '🎙️';
+      case 'R&B/Soul': return '🎺';
+      case 'Electronic/EDM': return '🎧';
+      case 'Jazz': return '🎷';
+      case 'Country': return '🤠';
+      case 'Metal': return '🤘';
+      case 'Blues': return '🎹';
+      case 'Alternative/Indie': return '🎨';
       default: return '🎧';
     }
   };
@@ -201,12 +505,33 @@ export default function ProfileScreen() {
   
   if (totalSongs > 0 && otherSongs === totalSongs) {
     // Distribute songs evenly across categories
-    const songsPerCategory = Math.ceil(totalSongs / 4);
-    const categories = ['Classical', 'Folk', 'Devotional', 'Fusion'];
+    const mainCategories = [
+      'Classical', 
+      'Folk', 
+      'Devotional', 
+      'Fusion',
+      'Ghazal',
+      'Qawwali',
+      'Film/Bollywood',
+      'Instrumental',
+      'Semi-Classical',
+      'Regional',
+      'Pop',
+      'Rock',
+      'Hip-Hop/Rap',
+      'R&B/Soul',
+      'Electronic/EDM',
+      'Jazz',
+      'Country',
+      'Metal',
+      'Blues',
+      'Alternative/Indie'
+    ];
+    const songsPerCategory = Math.ceil(totalSongs / mainCategories.length);
     
     songs.forEach((song, index) => {
       const categoryIndex = Math.floor(index / songsPerCategory);
-      const category = categories[categoryIndex] || 'Other';
+      const category = mainCategories[categoryIndex] || 'Other';
       
       // Move from Other to the assigned category
       const otherIndex = categorizedSongs.Other.indexOf(song);
@@ -284,7 +609,7 @@ export default function ProfileScreen() {
                   </View>
                   
                   <View style={styles.songsGrid}>
-                    {categorySongs.slice(0, 3).map((song, index) => (
+                    {(expandedCategories[category] ? categorySongs : categorySongs.slice(0, 3)).map((song, index) => (
                       <TouchableOpacity 
                         key={song.id} 
                         style={styles.songCard}
@@ -304,11 +629,16 @@ export default function ProfileScreen() {
                       </TouchableOpacity>
                     ))}
                     {categorySongs.length > 3 && (
-                      <View style={styles.moreSongsCard}>
+                      <TouchableOpacity 
+                        style={styles.moreSongsCard}
+                        onPress={() => toggleCategory(category)}
+                      >
                         <Text style={styles.moreSongsText}>
-                          +{categorySongs.length - 3} more
+                          {expandedCategories[category] 
+                            ? '▲ Show less' 
+                            : `+${categorySongs.length - 3} more`}
                         </Text>
-                      </View>
+                      </TouchableOpacity>
                     )}
                   </View>
                 </View>
@@ -514,12 +844,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#4a4a4a',
+    borderColor: '#4da6ff',
+    cursor: 'pointer',
   },
   moreSongsText: {
     fontSize: 12,
-    color: '#aaa',
-    fontWeight: '500',
+    color: '#4da6ff',
+    fontWeight: '600',
     textAlign: 'center',
   },
 });
