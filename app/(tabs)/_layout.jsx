@@ -6,6 +6,7 @@ import HomeScreen from "./HomeScreen";
 import ProfileScreen from "./ProfileScreen";
 import SuggestionScreen from "./SuggetionScreen";
 import LoginRegister from './index';
+import LandingPage from '../LandingPage';
 import { Colors } from "../../constants/Colors";
 import { useColorScheme } from "../../hooks/useColorScheme";
 import { Ionicons } from "@expo/vector-icons";
@@ -127,7 +128,7 @@ export default function StackLayout() {
 
   return (
     <Stack.Navigator
-      initialRouteName="Drawer"
+      initialRouteName="Landing"
       screenOptions={{
         headerShown: false,
         contentStyle: {
@@ -135,6 +136,7 @@ export default function StackLayout() {
         },
       }}
     >
+      <Stack.Screen name="Landing" component={LandingPage} />
       <Stack.Screen name="Drawer" component={DrawerNavigator} />
       <Stack.Screen name="LoginRegister" component={LoginRegister} options={{ presentation: 'modal' }} />
     </Stack.Navigator>

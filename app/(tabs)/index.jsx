@@ -6,7 +6,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import {
     ActivityIndicator, Alert,
     Dimensions,
-    Image, Platform,
+    Image, Modal, Platform,
     ScrollView,
     StyleSheet,
     Text, TextInput, TouchableOpacity,
@@ -21,10 +21,39 @@ export default function AuthPage() {
   const { width } = Dimensions.get('window');
   const isWeb = Platform.OS === 'web';
 
+  // Hide scrollbar for web
+  React.useEffect(() => {
+    if (isWeb && typeof document !== 'undefined') {
+      const styleId = 'hide-scrollbar-style';
+      if (!document.getElementById(styleId)) {
+        const style = document.createElement('style');
+        style.id = styleId;
+        style.textContent = `
+          * {
+            scrollbar-width: none !important;
+            -ms-overflow-style: none !important;
+          }
+          *::-webkit-scrollbar {
+            display: none !important;
+            width: 0 !important;
+            height: 0 !important;
+          }
+          body, html, #root {
+            overflow: auto;
+            scrollbar-width: none !important;
+            -ms-overflow-style: none !important;
+          }
+        `;
+        document.head.appendChild(style);
+      }
+    }
+  }, [isWeb]);
+
   const [user, loading, error] = useAuthState(auth);
 
   const [isLoading, setIsLoading] = useState(false);
   const [mode, setMode] = useState('login');
+  const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
 
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
@@ -190,7 +219,10 @@ export default function AuthPage() {
         isDarkMode && { backgroundColor: '#121212' },
         isWeb && styles.webContainer,
       ]}
+      style={styles.scrollView}
       keyboardShouldPersistTaps="handled"
+      showsVerticalScrollIndicator={false}
+      showsHorizontalScrollIndicator={false}
     >
       <View style={[styles.contentWrapper, isWeb && styles.webContentWrapper]}>
         <View style={styles.iconContainer}>
@@ -360,15 +392,76 @@ export default function AuthPage() {
         </View>
       )}
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => setShowPrivacyPolicy(true)}>
           <Text style={[styles.privacyPolicy, isDarkMode && { color: '#888' }]}>Privacy Policy</Text>
         </TouchableOpacity>
       </View>
+
+      {/* Privacy Policy Modal */}
+      <Modal
+        visible={showPrivacyPolicy}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setShowPrivacyPolicy(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={[styles.modalContent, isDarkMode && styles.modalContentDark]}>
+            <ScrollView 
+              style={styles.modalScroll}
+              showsVerticalScrollIndicator={false}
+            >
+              <Text style={[styles.modalTitle, isDarkMode && { color: '#fff' }]}>Privacy Policy</Text>
+              
+              <Text style={[styles.modalSectionTitle, isDarkMode && { color: '#fff' }]}>Information We Collect</Text>
+              <Text style={[styles.modalText, isDarkMode && { color: '#ccc' }]}>
+                We collect information you provide directly to us, including your name, email address, 
+                and music preferences when you create an account or use our services.
+              </Text>
+
+              <Text style={[styles.modalSectionTitle, isDarkMode && { color: '#fff' }]}>How We Use Your Information</Text>
+              <Text style={[styles.modalText, isDarkMode && { color: '#ccc' }]}>
+                We use the information we collect to provide, maintain, and improve our services, 
+                including personalized music recommendations based on your preferences and listening history.
+              </Text>
+
+              <Text style={[styles.modalSectionTitle, isDarkMode && { color: '#fff' }]}>Data Security</Text>
+              <Text style={[styles.modalText, isDarkMode && { color: '#ccc' }]}>
+                We implement appropriate security measures to protect your personal information from 
+                unauthorized access, alteration, disclosure, or destruction.
+              </Text>
+
+              <Text style={[styles.modalSectionTitle, isDarkMode && { color: '#fff' }]}>Your Rights</Text>
+              <Text style={[styles.modalText, isDarkMode && { color: '#ccc' }]}>
+                You have the right to access, update, or delete your personal information at any time. 
+                You can manage your account settings or contact us for assistance.
+              </Text>
+
+              <Text style={[styles.modalSectionTitle, isDarkMode && { color: '#fff' }]}>Contact Us</Text>
+              <Text style={[styles.modalText, isDarkMode && { color: '#ccc' }]}>
+                If you have any questions about this Privacy Policy, please contact us at 
+                support@ragarhythm.com
+              </Text>
+            </ScrollView>
+
+            <TouchableOpacity 
+              style={styles.modalCloseButton}
+              onPress={() => setShowPrivacyPolicy(false)}
+            >
+              <Text style={styles.modalCloseButtonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  scrollView: {
+    flex: 1,
+    scrollbarWidth: 'none',
+    msOverflowStyle: 'none',
+  },
   container: {
     padding: 24,
     paddingTop: 60,
@@ -404,10 +497,7 @@ const styles = StyleSheet.create({
     overflow: 'auto',
     scrollbarWidth: 'none',
     msOverflowStyle: 'none',
-    // Hide scrollbar for webkit browsers
-    '&::-webkit-scrollbar': {
-      display: 'none',
-    },
+    WebkitOverflowScrolling: 'touch',
   },
   iconContainer: {
     alignItems: 'center',
@@ -571,5 +661,66 @@ const styles = StyleSheet.create({
     color: '#667eea',
     textDecorationLine: 'underline',
     fontWeight: '500',
+  },
+  
+  // Modal Styles
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 24,
+    width: '100%',
+    maxWidth: 500,
+    maxHeight: '80%',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 8,
+  },
+  modalContentDark: {
+    backgroundColor: '#1e1e1e',
+  },
+  modalScroll: {
+    marginBottom: 16,
+  },
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    color: '#212529',
+    textAlign: 'center',
+  },
+  modalSectionTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginTop: 16,
+    marginBottom: 8,
+    color: '#212529',
+  },
+  modalText: {
+    fontSize: 14,
+    lineHeight: 22,
+    color: '#666',
+    marginBottom: 12,
+    textAlign: 'justify',
+  },
+  modalCloseButton: {
+    backgroundColor: '#667eea',
+    padding: 14,
+    borderRadius: 10,
+    alignItems: 'center',
+    marginTop: 8,
+  },
+  modalCloseButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 14,
   },
 });
