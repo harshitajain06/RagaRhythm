@@ -103,7 +103,7 @@ export default function LandingPage() {
           Discover the Perfect Raga for Every Moment
         </Text>
         <Text style={styles.heroDescription}>
-          AI-powered mood-based music recommendations blending Indian classical ragas with global rhythms
+          AI-powered music recommendations, interactive learning tools, and practice features for mastering Indian classical ragas
         </Text>
         <TouchableOpacity 
           style={styles.ctaButton}
@@ -133,6 +133,9 @@ export default function LandingPage() {
           <Text style={styles.problemText}>
             • Missing the therapeutic power of traditional music in the digital age?
           </Text>
+          <Text style={styles.problemText}>
+            • Want to learn Indian classical music but need structured guidance and practice tools?
+          </Text>
         </View>
 
         <View style={[styles.sectionHeader, styles.solutionHeader]}>
@@ -141,7 +144,7 @@ export default function LandingPage() {
         </View>
         <View style={styles.solutionCard}>
           <Text style={styles.solutionText}>
-            RagaRhythm uses AI to understand your feelings and recommend the perfect ragas and songs that resonate with your emotional state. Whether you need calming morning ragas, energetic evening melodies, or mood-lifting global beats, we've got you covered.
+            RagaRhythm uses GPT-4 AI to understand your feelings and recommend the perfect ragas and songs that resonate with your emotional state. Whether you need calming morning ragas, energetic evening melodies, or mood-lifting global beats, we've got you covered. Master the art with 8 comprehensive theory lessons, practice with real audio metronome featuring 4 traditional taals and 6 guided ragas, and test your skills with GPT-4o-mini powered raga detection that analyzes your recordings in detail.
           </Text>
         </View>
       </View>
@@ -198,6 +201,83 @@ export default function LandingPage() {
               Your music history and preferences shape future recommendations
             </Text>
           </View>
+
+          <View style={styles.featureCard}>
+            <Text style={styles.featureIcon}>🎤</Text>
+            <Text style={styles.featureTitle}>AI Raga Detection</Text>
+            <Text style={styles.featureDescription}>
+              Record or upload audio to identify ragas with GPT-4o-mini powered analysis including aroha, avaroha, time of day, mood characteristics, and similar ragas suggestions
+            </Text>
+          </View>
+
+          <View style={styles.featureCard}>
+            <Text style={styles.featureIcon}>🎼</Text>
+            <Text style={styles.featureTitle}>Interactive Practice Loops</Text>
+            <Text style={styles.featureDescription}>
+              Practice with real audio metronome (40-200 BPM), 4 traditional taals (Teental, Jhaptaal, Ektaal, Rupak), and 6 guided raga exercises for all skill levels
+            </Text>
+          </View>
+
+          <View style={styles.featureCard}>
+            <Text style={styles.featureIcon}>📖</Text>
+            <Text style={styles.featureTitle}>Comprehensive Theory Lessons</Text>
+            <Text style={styles.featureDescription}>
+              Master Indian classical music with 8 interactive lessons covering swaras, ragas, 10 thaats, taals, alankars, bandish, gharanas, and both Hindustani & Carnatic traditions
+            </Text>
+          </View>
+        </View>
+      </View>
+
+      {/* Learning & Practice Section */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitleCenter}>Complete Learning Ecosystem</Text>
+        
+        <View style={styles.learningGrid}>
+          <View style={styles.learningCard}>
+            <Text style={styles.learningIcon}>📖</Text>
+            <Text style={styles.learningTitle}>8 Interactive Theory Lessons</Text>
+            <View style={styles.learningBullets}>
+              <Text style={styles.learningBullet}>• Introduction to Swaras (the 7 fundamental notes)</Text>
+              <Text style={styles.learningBullet}>• Understanding Ragas (aroha, avaroha, vadi, samvadi)</Text>
+              <Text style={styles.learningBullet}>• The 10 Thaats (Bilawal, Kalyan, Khamaj, Bhairav, etc.)</Text>
+              <Text style={styles.learningBullet}>• Introduction to Taal (rhythm cycles, matra, sam, tali, khali)</Text>
+              <Text style={styles.learningBullet}>• Alankars - systematic practice exercises</Text>
+              <Text style={styles.learningBullet}>• Bandish structure (Khayal, Dhrupad, Thumri, Tarana)</Text>
+              <Text style={styles.learningBullet}>• Gharanas - vocal & instrumental traditions</Text>
+              <Text style={styles.learningBullet}>• Carnatic vs Hindustani music comparison</Text>
+              <Text style={styles.learningBullet}>• Interactive quizzes & comprehensive progress tracking</Text>
+            </View>
+          </View>
+
+          <View style={styles.learningCard}>
+            <Text style={styles.learningIcon}>🎼</Text>
+            <Text style={styles.learningTitle}>Professional Practice Tools</Text>
+            <View style={styles.learningBullets}>
+              <Text style={styles.learningBullet}>• Real audio metronome with tempo-synced clicks (40-200 BPM)</Text>
+              <Text style={styles.learningBullet}>• 4 traditional taals with visual beat indicators (Teental, Jhaptaal, Ektaal, Rupak)</Text>
+              <Text style={styles.learningBullet}>• 6 guided raga exercises (Yaman, Bhairav, Bhupali, Darbari Kanada, Malkauns, Bageshri)</Text>
+              <Text style={styles.learningBullet}>• Custom loop creation with note sequences</Text>
+              <Text style={styles.learningBullet}>• Difficulty levels: Beginner to Advanced</Text>
+              <Text style={styles.learningBullet}>• Aroha & Avaroha practice with detailed patterns</Text>
+              <Text style={styles.learningBullet}>• YouTube tutorial integration for each raga</Text>
+              <Text style={styles.learningBullet}>• Sam emphasis (louder first beat) for cycle clarity</Text>
+            </View>
+          </View>
+
+          <View style={styles.learningCard}>
+            <Text style={styles.learningIcon}>🎤</Text>
+            <Text style={styles.learningTitle}>AI Raga Detection</Text>
+            <View style={styles.learningBullets}>
+              <Text style={styles.learningBullet}>• Record live or upload existing audio files</Text>
+              <Text style={styles.learningBullet}>• GPT-4o-mini powered raga identification</Text>
+              <Text style={styles.learningBullet}>• Detailed characteristics and pakad analysis</Text>
+              <Text style={styles.learningBullet}>• Aroha & Avaroha note extraction</Text>
+              <Text style={styles.learningBullet}>• Time of day performance recommendations</Text>
+              <Text style={styles.learningBullet}>• Mood & emotional context interpretation</Text>
+              <Text style={styles.learningBullet}>• Similar ragas suggestions for exploration</Text>
+              <Text style={styles.learningBullet}>• Popular ragas reference guide (6 ragas)</Text>
+            </View>
+          </View>
         </View>
       </View>
 
@@ -251,6 +331,22 @@ export default function LandingPage() {
             <Text style={styles.audienceTitle}>Cultural Connectors</Text>
             <Text style={styles.audienceDescription}>
               Stay connected to your roots or explore new cultural musical traditions
+            </Text>
+          </View>
+
+          <View style={styles.audienceCard}>
+            <Text style={styles.audienceIcon}>🎹</Text>
+            <Text style={styles.audienceTitle}>Aspiring Performers</Text>
+            <Text style={styles.audienceDescription}>
+              Practice with professional tools like adjustable metronome, taal cycles, and get AI feedback on your recordings
+            </Text>
+          </View>
+
+          <View style={styles.audienceCard}>
+            <Text style={styles.audienceIcon}>👨‍🏫</Text>
+            <Text style={styles.audienceTitle}>Music Teachers & Coaches</Text>
+            <Text style={styles.audienceDescription}>
+              Use as a teaching aid with theory lessons, practice tools, and raga references for students at all levels
             </Text>
           </View>
         </View>
@@ -312,6 +408,20 @@ export default function LandingPage() {
               Browse 150+ global music categories or dive deeper into time-based ragas and regional music
             </Text>
           </View>
+
+          <View style={styles.stepArrow}>
+            <Text style={styles.stepArrowText}>↓</Text>
+          </View>
+
+          <View style={styles.stepCard}>
+            <View style={styles.stepNumber}>
+              <Text style={styles.stepNumberText}>5</Text>
+            </View>
+            <Text style={styles.stepTitle}>Learn & Practice</Text>
+            <Text style={styles.stepDescription}>
+              Master ragas with theory lessons, practice with interactive metronome, and test your skills with AI raga detection
+            </Text>
+          </View>
         </View>
       </View>
 
@@ -332,7 +442,7 @@ export default function LandingPage() {
             <Text style={styles.valuePropIcon}>🤖</Text>
             <Text style={styles.valuePropTitle}>Modern AI Technology</Text>
             <Text style={styles.valuePropText}>
-              Powered by GPT-4 for intelligent mood analysis and music matching
+              Powered by GPT-4 for intelligent mood analysis, music matching, and GPT-4o-mini for precise raga detection
             </Text>
           </View>
 
@@ -367,14 +477,38 @@ export default function LandingPage() {
               Use on mobile, tablet, or web - your music journey follows you everywhere
             </Text>
           </View>
+
+          <View style={styles.valuePropCard}>
+            <Text style={styles.valuePropIcon}>🎓</Text>
+            <Text style={styles.valuePropTitle}>Complete Learning System</Text>
+            <Text style={styles.valuePropText}>
+              From theory lessons to practice tools to AI analysis - everything you need to master ragas in one app
+            </Text>
+          </View>
+
+          <View style={styles.valuePropCard}>
+            <Text style={styles.valuePropIcon}>🎯</Text>
+            <Text style={styles.valuePropTitle}>Interactive Practice</Text>
+            <Text style={styles.valuePropText}>
+              Real audio metronome with tempo-synced clicks, 4 traditional taals with visual beat indicators, customizable tempo (40-200 BPM), and 6 guided raga exercises
+            </Text>
+          </View>
+
+          <View style={styles.valuePropCard}>
+            <Text style={styles.valuePropIcon}>🧪</Text>
+            <Text style={styles.valuePropTitle}>AI-Powered Analysis</Text>
+            <Text style={styles.valuePropText}>
+              Record yourself and get instant raga identification with detailed characteristics, notes, and suggestions
+            </Text>
+          </View>
         </View>
       </View>
 
       {/* Call to Action Section */}
       <View style={styles.ctaSection}>
-        <Text style={styles.ctaTitle}>Ready to Find Your Perfect Rhythm?</Text>
+        <Text style={styles.ctaTitle}>Ready to Master Indian Classical Music?</Text>
         <Text style={styles.ctaDescription}>
-          Join music lovers discovering the therapeutic power of ragas and mood-based music
+          Join thousands learning ragas through AI-powered tools, interactive lessons, and personalized music discovery
         </Text>
         <TouchableOpacity 
           style={styles.ctaButtonLarge}
@@ -390,7 +524,7 @@ export default function LandingPage() {
       <View style={styles.footer}>
         <Text style={styles.footerText}>© 2025 RagaRhythm. All rights reserved.</Text>
         <Text style={styles.footerSubtext}>
-          Bringing the ancient wisdom of ragas to the modern world
+          Master Indian classical music with AI-powered learning tools and personalized discovery
         </Text>
       </View>
     </ScrollView>
@@ -403,7 +537,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#0f0f0f',
   },
   contentContainer: {
-    paddingBottom: 10,
+    paddingBottom: 20,
     ...(isWeb && {
       maxWidth: isExtraLargeScreen ? 1400 : isLargeScreen ? 1200 : '100%',
       marginHorizontal: 'auto',
@@ -414,29 +548,29 @@ const styles = StyleSheet.create({
   // Hero Section
   heroSection: {
     alignItems: 'center',
-    paddingTop: 25,
-    paddingBottom: 20,
-    paddingHorizontal: 15,
+    paddingTop: 40,
+    paddingBottom: 40,
+    paddingHorizontal: 20,
     backgroundColor: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
     position: 'relative',
   },
   skipButton: {
     position: 'absolute',
-    top: 12,
-    right: 12,
+    top: 20,
+    right: 20,
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 15,
+    paddingVertical: 10,
+    paddingHorizontal: 18,
+    borderRadius: 20,
     zIndex: 10,
   },
   skipButtonText: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '600',
     color: '#fff',
   },
   logoContainer: {
-    marginBottom: 8,
+    marginBottom: 12,
     shadowColor: '#fff',
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.3,
@@ -444,106 +578,108 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   logo: {
-    width: 60,
-    height: 60,
+    width: 80,
+    height: 80,
   },
   heroTitle: {
-    fontSize: isExtraLargeScreen ? 38 : isLargeScreen ? 34 : 28,
+    fontSize: isExtraLargeScreen ? 42 : isLargeScreen ? 38 : 32,
     fontWeight: '900',
     color: '#fff',
-    marginBottom: 5,
+    marginBottom: 8,
     textAlign: 'center',
     letterSpacing: -0.5,
   },
   heroTagline: {
-    fontSize: 16,
+    fontSize: isLargeScreen ? 20 : 17,
     fontWeight: '700',
     color: '#fff',
-    marginBottom: 6,
+    marginBottom: 10,
     textAlign: 'center',
     opacity: 0.95,
   },
   heroDescription: {
-    fontSize: 12,
+    fontSize: 14,
     color: '#e0e0e0',
     textAlign: 'center',
-    marginBottom: 15,
-    lineHeight: 18,
-    maxWidth: 500,
-    paddingHorizontal: 15,
+    marginBottom: 20,
+    lineHeight: 22,
+    maxWidth: 650,
+    paddingHorizontal: 20,
   },
   ctaButton: {
     backgroundColor: '#fff',
-    paddingVertical: 10,
-    paddingHorizontal: 24,
-    borderRadius: 25,
+    paddingVertical: 14,
+    paddingHorizontal: 32,
+    borderRadius: 28,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 3 },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.3,
-    shadowRadius: 6,
-    elevation: 6,
+    shadowRadius: 8,
+    elevation: 8,
   },
   ctaButtonText: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '700',
     color: '#667eea',
   },
 
   // Section Styles
   section: {
-    paddingHorizontal: 15,
-    paddingVertical: 15,
+    paddingHorizontal: isLargeScreen ? 30 : 18,
+    paddingVertical: isLargeScreen ? 40 : 28,
   },
   sectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 14,
   },
   solutionHeader: {
-    marginTop: 12,
+    marginTop: 24,
   },
   emojiIcon: {
-    fontSize: 24,
-    marginRight: 8,
+    fontSize: 28,
+    marginRight: 10,
   },
   sectionTitle: {
-    fontSize: 20,
+    fontSize: isLargeScreen ? 24 : 22,
     fontWeight: '800',
     color: '#fff',
   },
   sectionTitleCenter: {
-    fontSize: 24,
+    fontSize: isLargeScreen ? 32 : 28,
     fontWeight: '900',
     color: '#fff',
     textAlign: 'center',
-    marginBottom: 14,
+    marginBottom: 28,
+    letterSpacing: -0.5,
   },
 
   // Problem & Solution
   problemCard: {
     backgroundColor: '#1a1a1a',
-    padding: 12,
-    borderRadius: 10,
-    borderLeftWidth: 3,
+    padding: 18,
+    borderRadius: 14,
+    borderLeftWidth: 4,
     borderLeftColor: '#FF6B6B',
+    marginBottom: 14,
   },
   problemText: {
-    fontSize: 12,
+    fontSize: 14,
     color: '#e0e0e0',
-    marginBottom: 6,
-    lineHeight: 18,
+    marginBottom: 10,
+    lineHeight: 22,
   },
   solutionCard: {
     backgroundColor: '#1a1a1a',
-    padding: 12,
-    borderRadius: 10,
-    borderLeftWidth: 3,
+    padding: 18,
+    borderRadius: 14,
+    borderLeftWidth: 4,
     borderLeftColor: '#4CAF50',
   },
   solutionText: {
-    fontSize: 12,
+    fontSize: 14,
     color: '#e0e0e0',
-    lineHeight: 19,
+    lineHeight: 24,
   },
 
   // Features Grid
@@ -551,30 +687,68 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    gap: 8,
+    gap: 14,
   },
   featureCard: {
     backgroundColor: '#1a1a1a',
-    padding: 12,
-    borderRadius: 10,
+    padding: 18,
+    borderRadius: 14,
     width: isExtraLargeScreen ? '31%' : isLargeScreen ? '48%' : '100%',
     borderWidth: 1,
     borderColor: '#2a2a2a',
+    minHeight: 160,
   },
   featureIcon: {
-    fontSize: 28,
-    marginBottom: 6,
+    fontSize: 36,
+    marginBottom: 10,
   },
   featureTitle: {
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: '700',
     color: '#fff',
-    marginBottom: 4,
+    marginBottom: 8,
   },
   featureDescription: {
+    fontSize: 13,
+    color: '#bbb',
+    lineHeight: 20,
+  },
+
+  // Learning Grid
+  learningGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    gap: 16,
+  },
+  learningCard: {
+    backgroundColor: '#1a1a1a',
+    padding: 20,
+    borderRadius: 14,
+    width: isExtraLargeScreen ? '31%' : isLargeScreen ? '48%' : '100%',
+    borderWidth: 2,
+    borderColor: '#667eea',
+  },
+  learningIcon: {
+    fontSize: 40,
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  learningTitle: {
+    fontSize: 18,
+    fontWeight: '800',
+    color: '#667eea',
+    marginBottom: 14,
+    textAlign: 'center',
+  },
+  learningBullets: {
+    marginTop: 6,
+  },
+  learningBullet: {
     fontSize: 12,
-    color: '#aaa',
-    lineHeight: 17,
+    color: '#ccc',
+    lineHeight: 20,
+    marginBottom: 6,
   },
 
   // Audience Grid
@@ -582,30 +756,31 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    gap: 8,
+    gap: 14,
   },
   audienceCard: {
     backgroundColor: '#667eea',
-    padding: 12,
-    borderRadius: 10,
+    padding: 18,
+    borderRadius: 14,
     width: isExtraLargeScreen ? '31%' : isLargeScreen ? '48%' : '100%',
     alignItems: 'center',
+    minHeight: 145,
   },
   audienceIcon: {
-    fontSize: 30,
-    marginBottom: 6,
+    fontSize: 38,
+    marginBottom: 10,
   },
   audienceTitle: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: '700',
     color: '#fff',
-    marginBottom: 4,
+    marginBottom: 8,
     textAlign: 'center',
   },
   audienceDescription: {
-    fontSize: 11,
+    fontSize: 13,
     color: '#e0e0e0',
-    lineHeight: 16,
+    lineHeight: 20,
     textAlign: 'center',
   },
 
@@ -615,46 +790,46 @@ const styles = StyleSheet.create({
   },
   stepCard: {
     backgroundColor: '#1a1a1a',
-    padding: 12,
-    borderRadius: 10,
+    padding: 20,
+    borderRadius: 14,
     width: '100%',
-    maxWidth: 600,
+    maxWidth: 650,
     alignItems: 'center',
     borderWidth: 2,
     borderColor: '#667eea',
   },
   stepNumber: {
-    width: 35,
-    height: 35,
-    borderRadius: 18,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
     backgroundColor: '#667eea',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 12,
   },
   stepNumberText: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: '900',
     color: '#fff',
   },
   stepTitle: {
-    fontSize: 15,
+    fontSize: 17,
     fontWeight: '700',
     color: '#fff',
-    marginBottom: 4,
+    marginBottom: 8,
     textAlign: 'center',
   },
   stepDescription: {
-    fontSize: 12,
-    color: '#aaa',
-    lineHeight: 17,
+    fontSize: 14,
+    color: '#bbb',
+    lineHeight: 22,
     textAlign: 'center',
   },
   stepArrow: {
-    marginVertical: 6,
+    marginVertical: 10,
   },
   stepArrowText: {
-    fontSize: 20,
+    fontSize: 26,
     color: '#667eea',
   },
 
@@ -663,64 +838,67 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    gap: 8,
+    gap: 14,
   },
   valuePropCard: {
     backgroundColor: '#1a1a1a',
-    padding: 10,
-    borderRadius: 10,
+    padding: 18,
+    borderRadius: 14,
     width: isExtraLargeScreen ? '31%' : isLargeScreen ? '48%' : '100%',
     alignItems: 'center',
     borderWidth: 1,
     borderColor: '#764ba2',
+    minHeight: 160,
   },
   valuePropIcon: {
-    fontSize: 26,
-    marginBottom: 6,
+    fontSize: 36,
+    marginBottom: 10,
   },
   valuePropTitle: {
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: '700',
     color: '#fff',
-    marginBottom: 4,
+    marginBottom: 8,
     textAlign: 'center',
   },
   valuePropText: {
-    fontSize: 11,
-    color: '#aaa',
-    lineHeight: 16,
+    fontSize: 13,
+    color: '#bbb',
+    lineHeight: 20,
     textAlign: 'center',
   },
 
   // CTA Section
   ctaSection: {
     alignItems: 'center',
-    paddingHorizontal: 15,
-    paddingVertical: 20,
+    paddingHorizontal: isLargeScreen ? 30 : 18,
+    paddingVertical: isLargeScreen ? 40 : 30,
     backgroundColor: '#1a1a1a',
-    marginHorizontal: 15,
-    borderRadius: 15,
-    marginBottom: 15,
+    marginHorizontal: isLargeScreen ? 30 : 18,
+    borderRadius: 16,
+    marginBottom: 24,
   },
   ctaTitle: {
-    fontSize: 22,
+    fontSize: isLargeScreen ? 30 : 24,
     fontWeight: '900',
     color: '#fff',
-    marginBottom: 8,
+    marginBottom: 12,
     textAlign: 'center',
+    letterSpacing: -0.5,
   },
   ctaDescription: {
-    fontSize: 12,
-    color: '#aaa',
-    marginBottom: 15,
+    fontSize: 14,
+    color: '#bbb',
+    marginBottom: 20,
     textAlign: 'center',
-    maxWidth: 500,
+    maxWidth: 650,
+    lineHeight: 22,
   },
   ctaButtonLarge: {
     backgroundColor: '#667eea',
-    paddingVertical: 12,
-    paddingHorizontal: 28,
-    borderRadius: 25,
+    paddingVertical: 14,
+    paddingHorizontal: 36,
+    borderRadius: 28,
     shadowColor: '#667eea',
     shadowOffset: { width: 0, height: 6 },
     shadowOpacity: 0.4,
@@ -728,34 +906,35 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   ctaButtonLargeText: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: '700',
     color: '#fff',
   },
   ctaSubtext: {
-    fontSize: 10,
+    fontSize: 12,
     color: '#888',
-    marginTop: 10,
+    marginTop: 12,
     textAlign: 'center',
   },
 
   // Footer
   footer: {
     alignItems: 'center',
-    paddingVertical: 12,
-    paddingHorizontal: 15,
+    paddingVertical: 24,
+    paddingHorizontal: 18,
     borderTopWidth: 1,
     borderTopColor: '#2a2a2a',
   },
   footerText: {
-    fontSize: 11,
-    color: '#666',
-    marginBottom: 4,
+    fontSize: 13,
+    color: '#888',
+    marginBottom: 6,
   },
   footerSubtext: {
-    fontSize: 10,
-    color: '#555',
+    fontSize: 12,
+    color: '#666',
     fontStyle: 'italic',
+    textAlign: 'center',
   },
 });
 

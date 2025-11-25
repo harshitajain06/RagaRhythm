@@ -5,6 +5,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "./HomeScreen";
 import ProfileScreen from "./ProfileScreen";
 import SuggestionScreen from "./SuggetionScreen";
+import RagaDetectionScreen from "./RagaDetectionScreen";
+import PracticeLoopsScreen from "./PracticeLoopsScreen";
+import TheoryLessonsScreen from "./TheoryLessonsScreen";
 import LoginRegister from './index';
 import LandingPage from '../LandingPage';
 import { Colors } from "../../constants/Colors";
@@ -44,6 +47,12 @@ const BottomTabs = () => {
             iconName = focused ? "person" : "person-outline";
           } else if (route.name === "Suggestions") {
             iconName = focused ? "musical-notes" : "musical-notes-outline";
+          } else if (route.name === "RagaDetection") {
+            iconName = focused ? "mic" : "mic-outline";
+          } else if (route.name === "Practice") {
+            iconName = focused ? "play-circle" : "play-circle-outline";
+          } else if (route.name === "Theory") {
+            iconName = focused ? "book" : "book-outline";
           }
 
           return <Ionicons name={iconName} size={size} color={color} />;
@@ -55,6 +64,21 @@ const BottomTabs = () => {
         name="Suggestions"
         component={SuggestionScreen}
         options={{ title: "Suggestions" }}
+      />
+      <Tab.Screen
+        name="RagaDetection"
+        component={RagaDetectionScreen}
+        options={{ title: "Raga Detection" }}
+      />
+      <Tab.Screen
+        name="Practice"
+        component={PracticeLoopsScreen}
+        options={{ title: "Practice" }}
+      />
+      <Tab.Screen
+        name="Theory"
+        component={TheoryLessonsScreen}
+        options={{ title: "Theory" }}
       />
       <Tab.Screen
         name="Profile"
