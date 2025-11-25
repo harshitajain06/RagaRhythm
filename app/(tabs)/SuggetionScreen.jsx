@@ -1,10 +1,10 @@
 // SuggestionScreen.js
+import * as WebBrowser from "expo-web-browser";
 import { addDoc, collection, doc, getDoc, serverTimestamp } from "firebase/firestore";
 import { OpenAI } from "openai";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
-  Linking,
   ScrollView,
   StyleSheet,
   Text,
@@ -68,7 +68,7 @@ export default function SuggestionScreen() {
           {
             role: "system",
             content:
-              "You are a music recommender. Based on the user's feelings, suggest 5 songs that match their mood. Return only song title and artist in bullet points.",
+              "You are a music recommender. Based on the user's feelings, suggest 5 ragas that match their mood. Return only raga title and artist in bullet points.",
           },
           { role: "user", content: userInput },
         ],
@@ -111,7 +111,12 @@ export default function SuggestionScreen() {
       console.error("Error saving clicked song:", err);
     }
 
-    Linking.openURL(url);
+    // Open in in-app browser using Expo WebBrowser
+    await WebBrowser.openBrowserAsync(url, {
+      presentationStyle: WebBrowser.WebBrowserPresentationStyle.FULL_SCREEN,
+      controlsColor: "#007BFF",
+      toolbarColor: "#1e1e1e",
+    });
   };
 
   return (

@@ -1,18 +1,20 @@
+import { useNavigation } from '@react-navigation/native';
 import { onAuthStateChanged } from "firebase/auth";
 import { collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import {
-  Linking,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
+    Linking,
+    Platform,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View
 } from "react-native";
 import { auth, db } from "../../config/firebase";
 
 export default function ProfileScreen() {
+  const navigation = useNavigation();
   const [songs, setSongs] = useState([]);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -542,6 +544,72 @@ export default function ProfileScreen() {
     });
   }
 
+  // Show login prompt if user is not logged in
+  if (!loading && !user) {
+    return (
+      <ScrollView 
+        style={styles.container}
+        contentContainerStyle={[styles.scrollContent, styles.centerContent, isWeb && styles.webScrollContent]}
+      >
+        <View style={styles.loginPromptContainer}>
+          <View style={styles.loginIconCircle}>
+            <Text style={styles.loginIcon}>🔐</Text>
+          </View>
+          
+          <Text style={styles.loginPromptTitle}>
+            Login Required
+          </Text>
+          
+          <Text style={styles.loginPromptSubtitle}>
+            Please login to view your profile and music history
+          </Text>
+          
+          <View style={styles.loginPromptFeaturesContainer}>
+            <View style={styles.loginPromptFeature}>
+              <Text style={styles.loginPromptFeatureIcon}>🎵</Text>
+              <Text style={styles.loginPromptFeatureText}>
+                Access your personalized music recommendations
+              </Text>
+            </View>
+            
+            <View style={styles.loginPromptFeature}>
+              <Text style={styles.loginPromptFeatureIcon}>📚</Text>
+              <Text style={styles.loginPromptFeatureText}>
+                View your complete listening history
+              </Text>
+            </View>
+            
+            <View style={styles.loginPromptFeature}>
+              <Text style={styles.loginPromptFeatureIcon}>🎯</Text>
+              <Text style={styles.loginPromptFeatureText}>
+                Get songs organized by genre and mood
+              </Text>
+            </View>
+            
+            <View style={styles.loginPromptFeature}>
+              <Text style={styles.loginPromptFeatureIcon}>💾</Text>
+              <Text style={styles.loginPromptFeatureText}>
+                Save your favorite tracks across devices
+              </Text>
+            </View>
+          </View>
+          
+          <TouchableOpacity 
+            style={styles.loginButton}
+            onPress={() => navigation.navigate('LoginRegister')}
+            activeOpacity={0.8}
+          >
+            <Text style={styles.loginButtonText}>Login / Sign Up</Text>
+          </TouchableOpacity>
+          
+          <Text style={styles.loginPromptFooter}>
+            You can still explore music without logging in!
+          </Text>
+        </View>
+      </ScrollView>
+    );
+  }
+
   return (
     <ScrollView 
       style={styles.container}
@@ -660,10 +728,107 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingBottom: 40,
   },
+  centerContent: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   webScrollContent: {
     maxWidth: 800,
     alignSelf: 'center',
     width: '100%',
+  },
+  
+  // Login Prompt Styles
+  loginPromptContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 30,
+    paddingVertical: 40,
+    maxWidth: 500,
+  },
+  loginIconCircle: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    backgroundColor: '#667eea',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 24,
+    shadowColor: '#667eea',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.4,
+    shadowRadius: 16,
+    elevation: 8,
+  },
+  loginIcon: {
+    fontSize: 48,
+  },
+  loginPromptTitle: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#fff',
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  loginPromptSubtitle: {
+    fontSize: 16,
+    color: '#aaa',
+    marginBottom: 32,
+    textAlign: 'center',
+    lineHeight: 24,
+  },
+  loginPromptFeaturesContainer: {
+    width: '100%',
+    marginBottom: 32,
+  },
+  loginPromptFeature: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#1e1e1e',
+    padding: 16,
+    borderRadius: 12,
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: '#2a2a2a',
+  },
+  loginPromptFeatureIcon: {
+    fontSize: 28,
+    marginRight: 16,
+  },
+  loginPromptFeatureText: {
+    flex: 1,
+    fontSize: 14,
+    color: '#ccc',
+    lineHeight: 20,
+    fontWeight: '500',
+  },
+  loginButton: {
+    backgroundColor: '#667eea',
+    paddingHorizontal: 48,
+    paddingVertical: 16,
+    borderRadius: 12,
+    marginBottom: 20,
+    minWidth: 250,
+    shadowColor: '#667eea',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.4,
+    shadowRadius: 8,
+    elevation: 6,
+  },
+  loginButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    letterSpacing: 0.5,
+  },
+  loginPromptFooter: {
+    fontSize: 13,
+    color: '#888',
+    textAlign: 'center',
+    fontStyle: 'italic',
+    marginTop: 8,
   },
   
   // Profile Header

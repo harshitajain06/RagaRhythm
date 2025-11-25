@@ -3,19 +3,19 @@ import * as AuthSession from "expo-auth-session";
 import * as WebBrowser from "expo-web-browser";
 import React, { useEffect, useState } from "react";
 import {
-  ActivityIndicator,
-  Alert,
-  Dimensions,
-  FlatList,
-  Image,
-  Linking,
-  Modal,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+    ActivityIndicator,
+    Alert,
+    Dimensions,
+    FlatList,
+    Image,
+    Linking,
+    Modal,
+    Platform,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from "react-native";
 
 WebBrowser.maybeCompleteAuthSession();
@@ -71,6 +71,20 @@ const INDIAN_MUSIC_CATEGORIES = [
   { query: "Indipop songs", name: "🇮🇳 Indi-Pop", region: "IN" },
   { query: "Bollywood party songs", name: "🇮🇳 Bollywood Party", region: "IN" },
   { query: "Devotional Hindi songs", name: "🇮🇳 Devotional Music", region: "IN" },
+  
+  // Indian Classical Ragas
+  { query: "Hindustani classical ragas", name: "🎵 Hindustani Ragas", region: "IN" },
+  { query: "Carnatic classical ragas", name: "🎵 Carnatic Ragas", region: "IN" },
+  { query: "morning ragas bhairav", name: "🌅 Morning Ragas", region: "IN" },
+  { query: "evening ragas yaman", name: "🌆 Evening Ragas", region: "IN" },
+  { query: "night ragas darbari", name: "🌙 Night Ragas", region: "IN" },
+  { query: "monsoon ragas megh malhar", name: "🌧️ Monsoon Ragas", region: "IN" },
+  { query: "raga bhairavi classical", name: "🎵 Raga Bhairavi", region: "IN" },
+  { query: "raga yaman classical", name: "🎵 Raga Yaman", region: "IN" },
+  { query: "raga bhupali classical", name: "🎵 Raga Bhupali", region: "IN" },
+  { query: "raga darbari classical", name: "🎵 Raga Darbari", region: "IN" },
+  { query: "instrumental ragas sitar", name: "🎸 Instrumental Ragas", region: "IN" },
+  { query: "vocal classical ragas", name: "🎤 Vocal Ragas", region: "IN" },
   
   // Korean Music (K-Pop)
   { query: "K-pop 2024", name: "🇰🇷 K-Pop Hits", region: "KR" },

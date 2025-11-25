@@ -1,16 +1,16 @@
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { useNavigation } from '@react-navigation/native';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import {
-  ActivityIndicator, Alert,
-  Dimensions,
-  Image, Platform,
-  ScrollView,
-  StyleSheet,
-  Text, TextInput, TouchableOpacity,
-  View
+    ActivityIndicator, Alert,
+    Dimensions,
+    Image, Platform,
+    ScrollView,
+    StyleSheet,
+    Text, TextInput, TouchableOpacity,
+    View
 } from 'react-native';
 import { auth } from '../../config/firebase';
 
@@ -109,12 +109,6 @@ export default function AuthPage() {
     return Object.keys(errors).length === 0;
   };
 
-  useEffect(() => {
-    if (user) {
-      navigation.replace('Drawer');
-    }
-  }, [user]);
-
   const handleLogin = async () => {
     if (!validateLoginForm()) {
       return;
@@ -124,6 +118,9 @@ export default function AuthPage() {
     try {
       await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
       setIsLoading(false);
+      // Navigate back to main app after successful login
+      navigation.goBack();
+      Alert.alert('Success', 'Logged in successfully!');
     } catch (error) {
       setIsLoading(false);
       let errorMessage = 'Login failed. Please try again.';
@@ -161,6 +158,9 @@ export default function AuthPage() {
         displayName: registerName,
       });
       setIsLoading(false);
+      // Navigate back to main app after successful registration
+      navigation.goBack();
+      Alert.alert('Success', 'Account created successfully!');
     } catch (error) {
       setIsLoading(false);
       let errorMessage = 'Registration failed. Please try again.';
@@ -360,9 +360,6 @@ export default function AuthPage() {
         </View>
       )}
 
-        {/* OAuth Buttons */}
-        <OAuthButtons />
-
         <TouchableOpacity>
           <Text style={[styles.privacyPolicy, isDarkMode && { color: '#888' }]}>Privacy Policy</Text>
         </TouchableOpacity>
@@ -370,34 +367,6 @@ export default function AuthPage() {
     </ScrollView>
   );
 }
-
-function OAuthButtons() {
-  const colorScheme = useColorScheme();
-  const isDarkMode = colorScheme === 'dark';
-  
-  return (
-    <View style={{ marginTop: 16 }}>
-      <View style={{ alignItems: 'center', marginBottom: 12 }}>
-        <Text style={[styles.oauthDivider, isDarkMode && { color: '#888' }]}>Or continue with</Text>
-      </View>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 12 }}>
-        <TouchableOpacity 
-          style={[styles.oauthButton, isDarkMode && styles.oauthButtonDark]} 
-          onPress={() => alert('Facebook login coming soon')}
-        >
-          <Text style={[styles.oauthButtonText, isDarkMode && { color: '#fff' }]}>Facebook</Text>
-        </TouchableOpacity>
-        <TouchableOpacity 
-          style={[styles.oauthButton, isDarkMode && styles.oauthButtonDark]} 
-          onPress={() => alert('Google login coming soon')}
-        >
-          <Text style={[styles.oauthButtonText, isDarkMode && { color: '#fff' }]}>Google</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-}
-
 
 const styles = StyleSheet.create({
   container: {
@@ -594,35 +563,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: 'bold',
     fontSize: 14,
-  },
-  oauthDivider: {
-    fontSize: 12,
-    color: '#6c757d',
-    fontWeight: '500',
-  },
-  oauthButton: {
-    backgroundColor: '#fff',
-    borderWidth: 2,
-    borderColor: '#e9ecef',
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 12,
-    flex: 1,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 4,
-  },
-  oauthButtonDark: {
-    backgroundColor: '#2a2a2a',
-    borderColor: '#444',
-  },
-  oauthButtonText: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: '#343a40',
   },
   privacyPolicy: {
     textAlign: 'center',

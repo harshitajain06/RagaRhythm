@@ -1,5 +1,5 @@
 // src/navigation/StackLayout.jsx
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "./HomeScreen";
@@ -14,6 +14,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { signOut } from 'firebase/auth';
 import { Alert } from 'react-native';
 import { auth } from "../../config/firebase";
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 
 const Stack = createStackNavigator();
@@ -66,11 +67,12 @@ const BottomTabs = () => {
 // Drawer Navigator Component
 const DrawerNavigator = () => {
   const navigation = useNavigation();
+  const [user] = useAuthState(auth);
 
   const handleLogout = () => {
     signOut(auth)
       .then(() => {
-        navigation.replace("LoginRegister");
+        Alert.alert("Success", "Logged out successfully!");
       })
       .catch((err) => {
         console.error("Logout Error:", err);
@@ -78,26 +80,43 @@ const DrawerNavigator = () => {
       });
   };
 
+  const handleLogin = () => {
+    navigation.navigate("LoginRegister");
+  };
+
   return (
     <Drawer.Navigator initialRouteName="MainTabs">
       <Drawer.Screen name="MainTabs" component={BottomTabs} options={{ title: 'Home' }} />
       
-      <Drawer.Screen
-        name="Logout"
-        component={BottomTabs}
-        options={{
-          title: 'Logout',
-          drawerIcon: ({ color, size }) => (
-            <Ionicons name="log-out-outline" size={size} color={color} />
-          ),
-        }}
-        listeners={{
-          drawerItemPress: (e) => {
-            e.preventDefault();
-            handleLogout();
-          },
-        }}
-      />
+      {user ? (
+        <Drawer.Screen
+          name="Logout"
+          component={BottomTabs}
+          options={{
+            title: 'Logout',
+            drawerIcon: ({ color, size }) => (
+              <Ionicons name="log-out-outline" size={size} color={color} />
+            ),
+          }}
+          listeners={{
+            drawerItemPress: (e) => {
+              e.preventDefault();
+              handleLogout();
+            },
+          }}
+        />
+      ) : (
+        <Drawer.Screen
+          name="Login"
+          component={LoginRegister}
+          options={{
+            title: 'Login',
+            drawerIcon: ({ color, size }) => (
+              <Ionicons name="log-in-outline" size={size} color={color} />
+            ),
+          }}
+        />
+      )}
     </Drawer.Navigator>
   );
 };
@@ -108,6 +127,7 @@ export default function StackLayout() {
 
   return (
     <Stack.Navigator
+      initialRouteName="Drawer"
       screenOptions={{
         headerShown: false,
         contentStyle: {
@@ -115,8 +135,8 @@ export default function StackLayout() {
         },
       }}
     >
-    <Stack.Screen name="LoginRegister" component={LoginRegister} />
       <Stack.Screen name="Drawer" component={DrawerNavigator} />
+      <Stack.Screen name="LoginRegister" component={LoginRegister} options={{ presentation: 'modal' }} />
     </Stack.Navigator>
   );
 }
