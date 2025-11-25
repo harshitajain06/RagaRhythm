@@ -152,7 +152,7 @@ export default function StackLayout() {
 
   return (
     <Stack.Navigator
-      initialRouteName="Landing"
+      // initialRouteName="Landing"
       screenOptions={{
         headerShown: false,
         contentStyle: {
